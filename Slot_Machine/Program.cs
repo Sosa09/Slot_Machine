@@ -12,17 +12,18 @@ namespace Slot_Machine
             Random random = new Random();
 
             const int MAX_SPIN_VALUE = 3;
-            
+            const int FIRST_POSITION_OF_DIMENSIONAL_ARRAY = 0;
+            const int SECOND_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int START_MONEY = 30; //virtual money every gamer starts with 
             int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profite = 0; //loses or winnings of the users
-            bool isPlayerMoneyZero = false; //return true if user has no money to player anymore and will end the game
+            bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
 
             //FIRST WHILE LOOP TO KEEP THE GAME RUNNING AFTER EACH PLAY
             while (true)
             {
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
-                while (!isPlayerMoneyZero) 
+                while (isPlayerMoneyNotZero)
                 {
                     //BET MIN 1$ max 3$
                     Console.WriteLine("Please bet min 1 or max 3 dollars to spin");
@@ -33,9 +34,9 @@ namespace Slot_Machine
 
                     int[,] slot = new int[playerBet, MAX_SPIN_VALUE];
 
-                    for (int i = 0; i < slot.GetLength(0); i++)
+                    for (int i = 0; i < slot.GetLength(FIRST_POSITION_OF_DIMENSIONAL_ARRAY); i++)
                     {
-                        for (int j = 0; j < slot.GetLength(1); j++)
+                        for (int j = 0; j < slot.GetLength(SECOND_POSITION_OF_DIMENSIONAL_ARRAY); j++)
                         {
                             int randomNr = random.Next(MAX_SPIN_VALUE);
                             slot[i, j] = randomNr;
@@ -44,10 +45,12 @@ namespace Slot_Machine
                         Console.WriteLine();
                     }
 
-                }
-            }
 
-         
+
+                }
+
+
+            }
         }
     }
 }
