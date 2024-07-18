@@ -11,8 +11,20 @@ namespace Slot_Machine
             const int START_MONEY = 30; //virtual money every gamer starts with 
             int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profite = 0; //loses or winnings of the users
+            bool isPlayerMoneyZero = false; //return true if user has no money to player anymore and will end the game
 
-            
+            //FIRST WHILE LOOP TO KEEP THE GAME RUNNING AFTER EACH PLAY
+            while (true)
+            {
+                //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
+                while (!isPlayerMoneyZero) 
+                { 
+                    //BET MIN 1$ max 3$
+
+                    //BASED ON  BET DEFINE ARRAYS
+                
+                }
+            }
 
          
         }
