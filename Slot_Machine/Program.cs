@@ -17,6 +17,8 @@ namespace Slot_Machine
             const int FIRST_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int SECOND_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int START_MONEY = 30; //virtual money every gamer starts with 
+            const int MINIMUM_BET = 1;
+            const int MAXIMUM_BET = 3;
             int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profite = 0; //loses or winnings of the users
             int dollarPerRow = 1;
@@ -30,7 +32,7 @@ namespace Slot_Machine
                 while (isPlayerMoneyNotZero)
                 {
                     //BET MIN 1$ max 3$
-                    Console.WriteLine("Please bet min 1 or max 3 dollars to spin");
+                    Console.WriteLine($"Please bet minimum {MINIMUM_BET} or max {MAXIMUM_BET} dollars to spin");
 
                     int.TryParse(Console.ReadLine(), out int playerBet); //reading end user input and parsing it to an int
 
