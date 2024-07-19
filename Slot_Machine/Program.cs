@@ -13,6 +13,10 @@ namespace Slot_Machine
             //instantiating Random class to get random numbers for the slot machine
             Random random = new Random();
 
+            const string HORIZONTAL_CHOICE = "Horizaontal";
+            const string VERTICAL_CHOICE = "Vertical";
+            const string DIAGONAL_CHOICE = "Diagonal";
+
             const int MAX_SPIN_VALUE = 3;
             const int FIRST_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int SECOND_POSITION_OF_DIMENSIONAL_ARRAY = 0;
@@ -24,11 +28,10 @@ namespace Slot_Machine
             const int GRID_ROW = 3;
             const int GRID_COL = 3;
 
+
             int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
-            int profite = 0; //loses or winnings of the users
+            int profit = 0; //loses or winnings of the users
 
-
-            bool winningRow = false;
             bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
 
             //FIRST WHILE LOOP TO KEEP THE GAME RUNNING AFTER EACH PLAY
@@ -40,15 +43,13 @@ namespace Slot_Machine
                     //BET MIN 1$ max 3$
                     Console.WriteLine($"Please bet minimum {MINIMUM_BET} or max {MAXIMUM_BET} dollars to spin");
 
+                    //validate user input
                     if (int.TryParse(Console.ReadLine(), out int playerBet))
                     {
 
                         int[,] slot = new int[GRID_ROW, GRID_COL];
-
-                        //looping trough the array.
-                        //going throuhg the first dimension and then the second where we store the value to the second dimensional array for later check and print the value to the end user
-
-
+                        string[] playerChoice = { "", "", "", "" };
+                        //Display the grid with the random generated numbers
                         for (int i = 0; i < slot.GetLength(FIRST_POSITION_OF_DIMENSIONAL_ARRAY); i++)
                         {
 
@@ -64,44 +65,13 @@ namespace Slot_Machine
 
                         }
 
-
-                        //lloping to see if there is a winning row REPITITIVE CODE BAD and MAGICNUMBERS
-                        for (int i = 0; i < slot.GetLength(FIRST_POSITION_OF_DIMENSIONAL_ARRAY); i++)
-                        {
-                            if (slot[i, 0] == slot[i, 1] && slot[i, 0] == slot[i, 2])
-                                winningRow = true;
-
-                        }
-
-                        if (winningRow)
-                        {
-                            //add 1 dollar to profilte and to pllayer monay
-
-                            profite++;
-                            playerMoney++;
-
-                            Console.WriteLine($"you won, your actual profit is {profite} and total money is {playerMoney}");
-                        }
-                        else
-                        {
-                            playerMoney--;
-                            profite--;
-                            Console.WriteLine($"you lost, your actual profit is {profite} and total money is {playerMoney}");
-
-                        }
-
-
                     }
                     else
                     {
                         Console.WriteLine($"{playerBet} is not a valid number, please try again!");
                     }
-
-                  
-
-
                 }
-                Console.WriteLine($"you quitted the game with {profite}. see you");
+                Console.WriteLine($"you quitted the game with {profit}. see you");
             }
         }
     }
