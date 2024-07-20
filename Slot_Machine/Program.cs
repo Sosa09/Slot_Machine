@@ -40,6 +40,9 @@ namespace Slot_Machine
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
                 while (isPlayerMoneyNotZero)
                 {
+                    //Displaying player's total money and profit
+                    Console.WriteLine($"Your total money: {playerMoney}");
+                    Console.WriteLine($"Your total profit: {profit}\n");
                     //BET MIN 1$ max 3$
                     Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn 1$ per winning slot");
 
@@ -49,7 +52,10 @@ namespace Slot_Machine
                         if(playerBet >= 3)
                         {
                             int[,] slot = new int[GRID_ROW, GRID_COL];
+
+                            
                             string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
+
                             for (int i = 0; i < possibleChoices.Length; i++)
                             {
                                 Console.WriteLine($"{i}: {possibleChoices[i]}");
