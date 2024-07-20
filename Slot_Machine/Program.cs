@@ -75,7 +75,7 @@ namespace Slot_Machine
                         bool winner = false;
                         if (possibleChoices[int.Parse(choice.ToString())] == HORIZONTAL_CHOICE)
                         {
-                       
+                            
                             for (int i = 0; i < GRID_ROW; i++)
                             {
                                 int nrToFind = slot[i, 0];
@@ -97,13 +97,36 @@ namespace Slot_Machine
                                 }
                             }
                         }
-                        else if (possibleChoices[choice] == VERTICAL_CHOICE)
+                        else if (possibleChoices[int.Parse(choice.ToString())] == VERTICAL_CHOICE)
+                        {
+                            for (int i = 0; i < GRID_COL; i++)
+                            {
+                                int nrToFind = slot[i, 0];
+                                for (int j = 0; j < GRID_ROW; j++)
+                                {
+                                    if (slot[i, j] != nrToFind)
+                                    {
+                                        winner = false;
+                                        break;
+                                    }
+
+                                    winner = true;
+                                }
+                                if (winner)
+                                {
+                                    profit++;
+                                    playerMoney++;
+                                    Console.WriteLine($"you won {GAIN}$");
+                                }
+                            }
+                        }
+                        else if (possibleChoices[int.Parse(choice.ToString())] == DIAGONAL_CHOICE)
                         {
 
                         }
-                        else if (possibleChoices[choice] == DIAGONAL_CHOICE)
+                        else
                         {
-
+                            Console.WriteLine("An error occured please try again.");
                         }
 
                         Console.WriteLine();
