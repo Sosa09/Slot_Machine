@@ -22,8 +22,8 @@ namespace Slot_Machine
             const int SECOND_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int START_MONEY = 30; //virtual money every gamer starts with 
 
-            const int MINIMUM_BET = 1;
-            const int MAXIMUM_BET = 3;
+            const int MINIMUM_BET = 3;
+            
 
             const int GRID_ROW = 3;
             const int GRID_COL = 3;
@@ -41,95 +41,104 @@ namespace Slot_Machine
                 while (isPlayerMoneyNotZero)
                 {
                     //BET MIN 1$ max 3$
-                    Console.WriteLine($"Please bet minimum {MINIMUM_BET} or max {MAXIMUM_BET} dollars to spin");
+                    Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn 1$ per winning slot");
 
                     //validate user input
                     if (int.TryParse(Console.ReadLine(), out int playerBet))
                     {
-
-                        int[,] slot = new int[GRID_ROW, GRID_COL];
-                        string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
-                        for (int i = 0; i < possibleChoices.Length; i++)
+                        if(playerBet >= 3)
                         {
-                            Console.WriteLine($"{i}: {possibleChoices[i]}");
-                        }
-
-                        //ask the player to bet on a row or col horizontally, vertically, diagonally
-                        char choice = Console.ReadKey().KeyChar;
-
-
-                        //Display the grid with the random generated numbers
-                        for (int i = 0; i < slot.GetLength(FIRST_POSITION_OF_DIMENSIONAL_ARRAY); i++)
-                        {
-                            for (int j = 0; j < slot.GetLength(SECOND_POSITION_OF_DIMENSIONAL_ARRAY); j++)
+                            int[,] slot = new int[GRID_ROW, GRID_COL];
+                            string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
+                            for (int i = 0; i < possibleChoices.Length; i++)
                             {
-                                int randomNr = random.Next(MAX_SPIN_VALUE);
-                                slot[i, j] = randomNr;
-                                Console.Write($"{randomNr} ");
+                                Console.WriteLine($"{i}: {possibleChoices[i]}");
+                            }
+
+                            //ask the player to bet on a row or col horizontally, vertically, diagonally
+                            char choice = Console.ReadKey().KeyChar;
+                            Console.WriteLine();
+
+                            //Display the grid with the random generated numbers
+                            for (int i = 0; i < slot.GetLength(FIRST_POSITION_OF_DIMENSIONAL_ARRAY); i++)
+                            {
+                                for (int j = 0; j < slot.GetLength(SECOND_POSITION_OF_DIMENSIONAL_ARRAY); j++)
+                                {
+                                    int randomNr = random.Next(2);
+                                    slot[i, j] = randomNr;
+                                    Console.Write($"{randomNr} ");
+                                }
+
+                                Console.WriteLine();
+
+                            }
+
+                            bool winner = false;
+                            if (possibleChoices[int.Parse(choice.ToString())] == HORIZONTAL_CHOICE)
+                            {
+
+                                for (int i = 0; i < GRID_ROW; i++)
+                                {
+                                    int nrToFind = slot[i, 0];
+
+                                    for (int j = 0; j < GRID_COL; j++)
+                                    {
+                                        if (slot[i, j] != nrToFind)
+                                        {
+                                            winner = false;
+                                            break;
+
+                                        }
+                                        winner = true;
+
+                                    }
+                                    if (winner)
+                                    {
+
+                                        playerMoney = profit + GAIN;
+                                        Console.WriteLine($"you won {GAIN}$");
+                                    }
+                                }
+                            }
+                            else if (possibleChoices[int.Parse(choice.ToString())] == VERTICAL_CHOICE)
+                            {
+                                for (int i = 0; i < GRID_ROW; i++)
+                                {
+                                    int nrToFind = slot[0, i];
+                                    for (int j = 0; j < GRID_COL; j++)
+                                    {
+                                        if (slot[j, i] != nrToFind)
+                                        {
+                                            winner = false;
+                                            break;
+                                        }
+
+                                        winner = true;
+                                    }
+                                    if (winner)
+                                    {
+
+                                        playerMoney = profit + GAIN;
+                                        Console.WriteLine($"you won {GAIN}$");
+                                    }
+                                }
+                            }
+                            else if (possibleChoices[int.Parse(choice.ToString())] == DIAGONAL_CHOICE)
+                            {
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("An error occured please try again.");
                             }
 
                             Console.WriteLine();
-
-                        }
-
-                        bool winner = false;
-                        if (possibleChoices[int.Parse(choice.ToString())] == HORIZONTAL_CHOICE)
-                        {
-                            
-                            for (int i = 0; i < GRID_ROW; i++)
-                            {
-                                int nrToFind = slot[i, 0];
-                                for(int j = 0;j < GRID_COL; j++)
-                                {
-                                    if (slot[i, j] != nrToFind)
-                                    {
-                                        winner = false;
-                                        break;
-                                    }
-                                     
-                                    winner = true;
-                                }
-                                if (winner)
-                                {
-                                    profit++;
-                                    playerMoney++;
-                                    Console.WriteLine($"you won {GAIN}$");
-                                }
-                            }
-                        }
-                        else if (possibleChoices[int.Parse(choice.ToString())] == VERTICAL_CHOICE)
-                        {
-                            for (int i = 0; i < GRID_COL; i++)
-                            {
-                                int nrToFind = slot[i, 0];
-                                for (int j = 0; j < GRID_ROW; j++)
-                                {
-                                    if (slot[i, j] != nrToFind)
-                                    {
-                                        winner = false;
-                                        break;
-                                    }
-
-                                    winner = true;
-                                }
-                                if (winner)
-                                {
-                                    profit++;
-                                    playerMoney++;
-                                    Console.WriteLine($"you won {GAIN}$");
-                                }
-                            }
-                        }
-                        else if (possibleChoices[int.Parse(choice.ToString())] == DIAGONAL_CHOICE)
-                        {
-
                         }
                         else
                         {
-                            Console.WriteLine("An error occured please try again.");
+                            Console.WriteLine($"Minimum bet is {MINIMUM_BET}");
                         }
-
-                        Console.WriteLine();
+                        
 
              
 
