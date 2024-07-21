@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlTypes;
+using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 
@@ -17,7 +18,7 @@ namespace Slot_Machine
             const string VERTICAL_CHOICE = "Vertical";
             const string DIAGONAL_CHOICE = "Diagonal";
 
-            const int FIRT_LINE_ELEMENT = 0;
+      
             const int FIRST_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int SECOND_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int START_MONEY = 30; //virtual money every gamer starts with 
@@ -27,6 +28,12 @@ namespace Slot_Machine
 
             const int GRID_ROW = 3;
             const int GRID_COL = 3;
+
+            //corresponds to the compoarable indices in order to check for a winning spin
+    
+            const int FIRT_LINE_ELEMENT = 0;
+            const int MIDDLE_LNE_ELEMENT = 1;
+            
             const int GAIN = 1;
 
             int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
@@ -49,11 +56,13 @@ namespace Slot_Machine
                     //validate user input
                     if (int.TryParse(Console.ReadLine(), out int playerBet))
                     {
+                        //check if player has ennough money to play and if he has entered the minimum bet
                         if(playerBet >= MINIMUM_BET || playerMoney < playerBet)
                         {
+                            //define the grid
                             int[,] slot = new int[GRID_ROW, GRID_COL];
 
-                            
+                            //set up the choices
                             string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
 
                             for (int i = 0; i < possibleChoices.Length; i++)
@@ -66,9 +75,9 @@ namespace Slot_Machine
                             Console.WriteLine();
 
                             //Display the grid with the random generated numbers
-                            for (int i = 0; i < slot.GetLength(FIRST_POSITION_OF_DIMENSIONAL_ARRAY); i++)
+                            for (int i = 0; i < GRID_ROW; i++)
                             {
-                                for (int j = 0; j < slot.GetLength(SECOND_POSITION_OF_DIMENSIONAL_ARRAY); j++)
+                                for (int j = 0; j < GRID_COL; j++)
                                 {
                                     int randomNr = random.Next(2);
                                     slot[i, j] = randomNr;
@@ -134,7 +143,43 @@ namespace Slot_Machine
                             }
                             else if (possibleChoices[int.Parse(choice.ToString())] == DIAGONAL_CHOICE)
                             {
+                                comparableNumber = slot[MIDDLE_LNE_ELEMENT, 1];
+                                for (int i = 0; i < GRID_ROW; i++)
+                                {
+                                     //MIDLLE ELEMENT IS THE COMPARABLE ELEMENT
+                                    if (i % 2 == 0) //ignore the  middle row wihch holds the comparable number
+                                        continue;
+                                    //checking vertical from left
+                                    for (int j = 0; j < GRID_COL; j++)
+                                    {   
+                                        int currentCell = slot[i, j];
+                                        if (currentCell != comparableNumber)
+                                        {
+                                            winner = false;
+                                            break;
 
+                                        }
+                                        winner = true;
+                                    }
+                                    //checking vertical from right
+                                    for (int j = 0; j < GRID_COL; j++)
+                                    {
+                                        int currentCell = slot[i, j];
+                                        if (currentCell != comparableNumber)
+                                        {
+                                            winner = false;
+                                            break;
+
+                                        }
+                                        winner = true;
+                                    }
+                                    if (winner)
+                                    {
+                                        Console.WriteLine($"you won {GAIN}$");
+                                        spinGain++;
+                                    }
+
+                                }
                             }
                             else
                             {
@@ -162,11 +207,6 @@ namespace Slot_Machine
                         {
                             Console.WriteLine($"Minimum bet is {MINIMUM_BET}");
                         }
-                        
-
-             
-
-
                     }
                     else
                     {
