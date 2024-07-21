@@ -143,36 +143,41 @@ namespace Slot_Machine
                             }
                             else if (possibleChoices[int.Parse(choice.ToString())] == DIAGONAL_CHOICE)
                             {
-                                comparableNumber = slot[MIDDLE_LNE_ELEMENT, 1];
-                                for (int i = 0; i < GRID_ROW; i++)
+                                comparableNumber = slot[MIDDLE_LNE_ELEMENT, 1]; //store middle for comparission
+                                int currentCell = 0;
+                                int actualIndex = 0; //increases or decrease by one depending on the flow of verficatio for instance if we check from right to left the actualInde should be 2 and will decrease to 1
+                                for (int i = 0; i < GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
                                 {
-                                     //MIDLLE ELEMENT IS THE COMPARABLE ELEMENT
-                                    if (i % 2 == 0) //ignore the  middle row wihch holds the comparable number
-                                        continue;
-                                    //checking vertical from left
-                                    for (int j = 0; j < GRID_COL; j++)
-                                    {   
-                                        int currentCell = slot[i, j];
-                                        if (currentCell != comparableNumber)
-                                        {
-                                            winner = false;
-                                            break;
+                                    
+                                    currentCell = slot[i, actualIndex];
 
-                                        }
+                                    if (comparableNumber != currentCell)
+                                        winner = false;
+                                    else
                                         winner = true;
-                                    }
-                                    //checking vertical from right
-                                    for (int j = 0; j < GRID_COL; j++)
+
+                                    actualIndex = i;
+
+                                    if (winner)
                                     {
-                                        int currentCell = slot[i, j];
-                                        if (currentCell != comparableNumber)
-                                        {
-                                            winner = false;
-                                            break;
-
-                                        }
-                                        winner = true;
+                                        Console.WriteLine($"you won {GAIN}$");
+                                        spinGain++;
                                     }
+
+                                }
+                                //checking reverse diagonal
+                                //actual index will bebgin with 3 here
+                                for (uint i = 2; GRID_ROW > i; i--)
+                                {
+                                    currentCell = slot[i, actualIndex];
+
+                                    if (comparableNumber != currentCell)
+                                        winner = false;
+                                    else
+                                        winner = true;
+
+                                    actualIndex = (int)i;
+
                                     if (winner)
                                     {
                                         Console.WriteLine($"you won {GAIN}$");
