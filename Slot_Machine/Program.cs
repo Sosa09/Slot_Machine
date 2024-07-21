@@ -17,7 +17,7 @@ namespace Slot_Machine
             const string VERTICAL_CHOICE = "Vertical";
             const string DIAGONAL_CHOICE = "Diagonal";
 
-            const int MAX_SPIN_VALUE = 3;
+            const int FIRT_LINE_ELEMENT = 0;
             const int FIRST_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int SECOND_POSITION_OF_DIMENSIONAL_ARRAY = 0;
             const int START_MONEY = 30; //virtual money every gamer starts with 
@@ -49,7 +49,7 @@ namespace Slot_Machine
                     //validate user input
                     if (int.TryParse(Console.ReadLine(), out int playerBet))
                     {
-                        if(playerBet >= 3)
+                        if(playerBet >= MINIMUM_BET || playerMoney < playerBet)
                         {
                             int[,] slot = new int[GRID_ROW, GRID_COL];
 
@@ -62,7 +62,7 @@ namespace Slot_Machine
                             }
 
                             //ask the player to bet on a row or col horizontally, vertically, diagonally
-                            char choice = Console.ReadKey().KeyChar;
+                            char choice = Console.ReadKey(false).KeyChar; //adding false as arg to readkey to not print the user choice
                             Console.WriteLine();
 
                             //Display the grid with the random generated numbers
@@ -80,40 +80,43 @@ namespace Slot_Machine
                             }
 
                             bool winner = false;
+                            int spinGain = 0;
+                            int comparableNumber = 0;
                             if (possibleChoices[int.Parse(choice.ToString())] == HORIZONTAL_CHOICE)
                             {
 
                                 for (int i = 0; i < GRID_ROW; i++)
                                 {
-                                    int nrToFind = slot[i, 0];
+                                    comparableNumber = slot[i, FIRT_LINE_ELEMENT];
 
                                     for (int j = 0; j < GRID_COL; j++)
                                     {
-                                        if (slot[i, j] != nrToFind)
+                                        int currentCell = slot[i, j];
+                                        if (currentCell != comparableNumber)
                                         {
                                             winner = false;
                                             break;
 
                                         }
                                         winner = true;
-
                                     }
-                                    if (winner)
+                                    if(winner)
                                     {
-
-                                        playerMoney = profit + GAIN;
                                         Console.WriteLine($"you won {GAIN}$");
+                                        spinGain++;
                                     }
+                                        
                                 }
+      
                             }
                             else if (possibleChoices[int.Parse(choice.ToString())] == VERTICAL_CHOICE)
                             {
                                 for (int i = 0; i < GRID_ROW; i++)
                                 {
-                                    int nrToFind = slot[0, i];
+                                    comparableNumber = slot[FIRT_LINE_ELEMENT, i];
                                     for (int j = 0; j < GRID_COL; j++)
                                     {
-                                        if (slot[j, i] != nrToFind)
+                                        if (slot[j, i] != comparableNumber)
                                         {
                                             winner = false;
                                             break;
@@ -123,9 +126,9 @@ namespace Slot_Machine
                                     }
                                     if (winner)
                                     {
-
-                                        playerMoney = profit + GAIN;
                                         Console.WriteLine($"you won {GAIN}$");
+                                        spinGain++;
+                                       
                                     }
                                 }
                             }
@@ -138,6 +141,21 @@ namespace Slot_Machine
                                 Console.WriteLine("An error occured please try again.");
                             }
 
+                            //checking if player has won something
+                            if (spinGain > 0)
+                            {
+                                Console.WriteLine($"your total gain for this slot is {spinGain}");
+
+                                profit += spinGain;
+                                playerMoney += spinGain;
+
+                            }
+                            else
+                            {
+                                Console.WriteLine($"you lost {playerBet}");
+                                playerMoney -= playerBet;
+                                profit -= spinGain;
+                            }
                             Console.WriteLine();
                         }
                         else
