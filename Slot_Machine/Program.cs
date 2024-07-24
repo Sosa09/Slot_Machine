@@ -96,8 +96,8 @@ namespace Slot_Machine
                                 }
 
                                 bool winner = true;
-                                int tempGain = 0; //will hold all the dollar for each loop and add it to the total profit
-                                int comparableNumber = 1;
+                                int gainingLine = 0; //will hold all the dollar for each loop and add it to the total profit
+                                int comparableNumber = 0;
                                 if (userChoice == HORIZONTAL_CHOICE)
                                 {
 
@@ -119,7 +119,7 @@ namespace Slot_Machine
                                         if (winner)
                                         {
                                             Console.WriteLine($"you won {GAIN}$");
-                                            tempGain++;
+                                            gainingLine++;
                                         }
 
                                     }
@@ -143,7 +143,7 @@ namespace Slot_Machine
                                         if (winner)
                                         {
                                             Console.WriteLine($"you won {GAIN}$");
-                                            tempGain++;
+                                            gainingLine++;
 
                                         }
                                     }
@@ -162,7 +162,7 @@ namespace Slot_Machine
                                     if (winner)
                                     {
                                         Console.WriteLine($"you won {GAIN}$");
-                                        tempGain++;
+                                        gainingLine++;
                                     }
                                     winner = true;
                                     //ANTI diagonal check
@@ -175,7 +175,7 @@ namespace Slot_Machine
                                     if (winner)
                                     {
                                         Console.WriteLine($"you won {GAIN}$");
-                                        tempGain++;
+                                        gainingLine++;
                                     }
 
                                 }
@@ -185,19 +185,19 @@ namespace Slot_Machine
                                 }
 
                                 //checking if player has won something
-                                if (tempGain > 0)
+                                if (gainingLine > 0)
                                 {
-                                    Console.WriteLine($"your total gain for this slot is {tempGain}");
+                                    Console.WriteLine($"your total gain for this slot is {gainingLine}");
 
-                                    profit += tempGain;
-                                    playerMoney += tempGain;
+                                    profit += gainingLine;
+                                    playerMoney += gainingLine;
 
                                 }
                                 else
                                 {
                                     Console.WriteLine($"you lost {playerBet}");
                                     playerMoney -= playerBet;
-                                    profit -= tempGain;
+                                    profit -= gainingLine;
                                 }
                                 Console.WriteLine();
                             }
