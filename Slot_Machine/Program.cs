@@ -97,7 +97,7 @@ namespace Slot_Machine
 
                                 bool winner = true;
                                 int tempGain = 0; //will hold all the dollar for each loop and add it to the total profit
-                                int comparableNumber = 0;
+                                int comparableNumber = 1;
                                 if (userChoice == HORIZONTAL_CHOICE)
                                 {
 
