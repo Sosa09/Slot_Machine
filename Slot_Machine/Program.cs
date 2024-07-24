@@ -25,7 +25,8 @@ namespace Slot_Machine
             const int MINIMUM_BET = 3; //Minimum bet
 
             const int FIRST_VALUE= 0;//Will be used to get the first value of the 2d array (FIRST_VALUE,FIRST_VALUE)
-            
+
+            const int DIFFICULTY = 2; //Which is easy. random will generate nr in grid between 0 and 2
 
             //Defining Grid ROW and COL Size
             const int GRID_ROW = 3;
@@ -45,6 +46,8 @@ namespace Slot_Machine
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
                 while (isPlayerMoneyNotZero)
                 {
+                    if(playerMoney < MINIMUM_BET)
+                        isPlayerMoneyNotZero = true;
                     //Displaying player's total money and profit
                     Console.WriteLine($"Your total money: {playerMoney}");
                     Console.WriteLine($"Your total profit: {profit}\n");
@@ -64,7 +67,7 @@ namespace Slot_Machine
                             string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
 
                             //Display the winning choices
-                            for (int i = 1; i <= possibleChoices.Length; i++)
+                            for (int i = 0; i <= possibleChoices.Length; i++)
                             {
                                 Console.WriteLine($"{i}: {possibleChoices[i]}");
                             }
@@ -81,12 +84,12 @@ namespace Slot_Machine
                                 var userChoice = possibleChoices[index];
                                 Console.WriteLine();
 
-                                //Display the grid with the random generated numbers
+                                //Design the grid with the random generated numbers
                                 for (int i = 0; i < GRID_ROW; i++)
                                 {
                                     for (int j = 0; j < GRID_COL; j++)
                                     {
-                                        int randomNr = random.Next(2);
+                                        int randomNr = random.Next(DIFFICULTY);
                                         grid[i, j] = randomNr;
                                         Console.Write($"{randomNr} ");
                                     }
@@ -104,7 +107,7 @@ namespace Slot_Machine
                                     for (int i = 0; i < GRID_ROW; i++)
                                     {
                                         comparableNumber = grid[i, FIRST_VALUE];
-
+                                        //looping through the rest of the row since first value is the comparableNumber
                                         for (int j = 1; j < GRID_COL; j++)
                                         {
                                             int currentCell = grid[i, j];
@@ -127,10 +130,13 @@ namespace Slot_Machine
                                 }
                                 else if (userChoice == VERTICAL_CHOICE)
                                 {
-                                    for (int i = 0; i < GRID_ROW; i++)
+                                    //looping trough each colomn
+                                    for (int i = 0; i < GRID_COL; i++)
                                     {
+                                        //storing the first element of each column(0, i);
                                         comparableNumber = grid[FIRST_VALUE, i];
-                                        for (int j = 0; j < GRID_COL; j++)
+
+                                        for (int j = 1; j < GRID_ROW; j++)
                                         {
                                             if (grid[j, i] != comparableNumber)
                                             {
@@ -181,6 +187,7 @@ namespace Slot_Machine
                                 }
                                 else
                                 {
+                                    
                                     Console.WriteLine("An error occured please try again.");
                                 }
 
