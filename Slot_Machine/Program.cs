@@ -61,10 +61,11 @@ namespace Slot_Machine
                     //Displaying player's total money and profit
                     Console.WriteLine($"Your total money: {playerMoney}");
                     Console.WriteLine($"Your total profit: {profit}\n");
+
                     //BET MIN 1$ max 3$
                     Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn 1$ per winning slot");
 
-         
+                    //Validating playerbet input should be 3
                     if (!int.TryParse(Console.ReadLine(), out int playerBet))
                     {
                         Console.WriteLine($"{playerBet} is not a valid number, please try again!");
@@ -72,7 +73,7 @@ namespace Slot_Machine
                     }
 
                     //check if player has ennough money to play and if he has entered the minimum bet
-                    if (playerBet < MINIMUM_BET && playerMoney < playerBet)
+                    if (playerBet < MINIMUM_BET || playerMoney < playerBet)
                     { 
                         Console.WriteLine($"Minimum bet is {MINIMUM_BET}");
                         break;
@@ -87,18 +88,18 @@ namespace Slot_Machine
                         Console.WriteLine($"{i}: {possibleChoices[i]}");
                     }
 
-                
-                    char choice = Console.ReadKey(false).KeyChar; //adding false as arg to readkey to not print the user choice
-
+                    //Ask user to input his choice and store it in choice
+                    char choice = Console.ReadKey(false).KeyChar; 
 
                     //validating user input and checking if choice is inside valid possible range
-                    if (!int.TryParse(choice.ToString(), out int index) && index > possibleChoices.Length)
+                    if (!int.TryParse(choice.ToString(), out int index) || index >= possibleChoices.Length)
                     {
                          
                         Console.WriteLine($"An error occured with your input {index} is invalid.");
                         break;
 
                     }
+                    
                     //storing user choice 
                     var userChoice = possibleChoices[index];
                     Console.WriteLine();
@@ -118,14 +119,16 @@ namespace Slot_Machine
                     }
 
                     bool winner = true;
-                    int gainingLine = 0; //will hold all the dollar for each loop and add it to the total profit
+                    int gainingLines = 0; //will hold all the dollar for each loop and add it to the total profit
                     int comparableNumber = 0;
+
                     if (userChoice == HORIZONTAL_CHOICE)
                     {
 
                         for (int i = 0; i < GRID_ROW; i++)
                         {
                             comparableNumber = grid[i, FIRST_VALUE];
+                            winner = true;
                             //looping through the rest of the row since first value is the comparableNumber
                             for (int j = 1; j < GRID_COL; j++)
                             {
@@ -136,12 +139,12 @@ namespace Slot_Machine
                                     break;
 
                                 }
-                                winner = true;
+                 
                             }
                             if (winner)
                             {
                                 Console.WriteLine($"you won {GAIN}$");
-                                gainingLine++;
+                                gainingLines++;
                             }
 
                         }
@@ -154,7 +157,7 @@ namespace Slot_Machine
                         {
                             //storing the first element of each column(0, i);
                             comparableNumber = grid[FIRST_VALUE, i];
-
+                            winner = true;
                             for (int j = 1; j < GRID_ROW; j++)
                             {
                                 if (grid[j, i] != comparableNumber)
@@ -163,12 +166,12 @@ namespace Slot_Machine
                                     break;
                                 }
 
-                                winner = true;
+                            
                             }
                             if (winner)
                             {
                                 Console.WriteLine($"you won {GAIN}$");
-                                gainingLine++;
+                                gainingLines++;
 
                             }
                         }
@@ -187,7 +190,7 @@ namespace Slot_Machine
                         if (winner)
                         {
                             Console.WriteLine($"you won {GAIN}$");
-                            gainingLine++;
+                            gainingLines++;
                         }
                         winner = true;
                         //ANTI diagonal check
@@ -200,25 +203,26 @@ namespace Slot_Machine
                         if (winner)
                         {
                             Console.WriteLine($"you won {GAIN}$");
-                            gainingLine++;
+                            gainingLines++;
                         }
                     }
 
                     //checking if player has won something
-                    if (gainingLine > 0)
+                    if (gainingLines > 0)
                     {
-                        Console.WriteLine($"your total gain for this slot is {gainingLine}");
 
-                        profit += gainingLine;
-                        playerMoney += gainingLine;
+                        Console.WriteLine($"Total win for this slot {gainingLines}");
+                        profit += gainingLines;
+                        playerMoney += gainingLines;
 
                     }
                     else
                     {
-                        Console.WriteLine($"you lost {playerBet}");
+                        Console.WriteLine($"you lost your bet {playerBet}");
                         playerMoney -= playerBet;
-                        profit -= gainingLine;
+                        profit -= gainingLines;
                     }
+                    
                     Console.WriteLine();
                     
                 }
