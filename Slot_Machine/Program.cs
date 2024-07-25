@@ -64,9 +64,8 @@ namespace Slot_Machine
                     //BET MIN 1$ max 3$
                     Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn 1$ per winning slot");
 
-                    //validate user input
-                    int playerBet;
-                    if (!int.TryParse(Console.ReadLine(), out playerBet))
+         
+                    if (!int.TryParse(Console.ReadLine(), out int playerBet))
                     {
                         Console.WriteLine($"{playerBet} is not a valid number, please try again!");
                         break;
@@ -93,106 +92,51 @@ namespace Slot_Machine
 
 
                     //validating user input and checking if choice is inside valid possible range
-                    if (int.TryParse(choice.ToString(), out int index) && index < possibleChoices.Length)
+                    if (!int.TryParse(choice.ToString(), out int index) && index > possibleChoices.Length)
+                    {
+                         
+                        Console.WriteLine($"An error occured with your input {index} is invalid.");
+                        break;
+
+                    }
+                    //storing user choice 
+                    var userChoice = possibleChoices[index];
+                    Console.WriteLine();
+
+                    //Design the grid with the random generated numbers
+                    for (int i = 0; i < GRID_ROW; i++)
+                    {
+                        for (int j = 0; j < GRID_COL; j++)
+                        {
+                            int randomNr = random.Next(DIFFICULTY);
+                            grid[i, j] = randomNr;
+                            Console.Write($"{randomNr} ");
+                        }
+
+                        Console.WriteLine();
+
+                    }
+
+                    bool winner = true;
+                    int gainingLine = 0; //will hold all the dollar for each loop and add it to the total profit
+                    int comparableNumber = 0;
+                    if (userChoice == HORIZONTAL_CHOICE)
                     {
 
-                        //storing user choice 
-                        var userChoice = possibleChoices[index];
-                        Console.WriteLine();
-
-                        //Design the grid with the random generated numbers
                         for (int i = 0; i < GRID_ROW; i++)
                         {
-                            for (int j = 0; j < GRID_COL; j++)
+                            comparableNumber = grid[i, FIRST_VALUE];
+                            //looping through the rest of the row since first value is the comparableNumber
+                            for (int j = 1; j < GRID_COL; j++)
                             {
-                                int randomNr = random.Next(DIFFICULTY);
-                                grid[i, j] = randomNr;
-                                Console.Write($"{randomNr} ");
-                            }
-
-                            Console.WriteLine();
-
-                        }
-
-                        bool winner = true;
-                        int gainingLine = 0; //will hold all the dollar for each loop and add it to the total profit
-                        int comparableNumber = 0;
-                        if (userChoice == HORIZONTAL_CHOICE)
-                        {
-
-                            for (int i = 0; i < GRID_ROW; i++)
-                            {
-                                comparableNumber = grid[i, FIRST_VALUE];
-                                //looping through the rest of the row since first value is the comparableNumber
-                                for (int j = 1; j < GRID_COL; j++)
+                                int currentCell = grid[i, j];
+                                if (currentCell != comparableNumber)
                                 {
-                                    int currentCell = grid[i, j];
-                                    if (currentCell != comparableNumber)
-                                    {
-                                        winner = false;
-                                        break;
-
-                                    }
-                                    winner = true;
-                                }
-                                if (winner)
-                                {
-                                    Console.WriteLine($"you won {GAIN}$");
-                                    gainingLine++;
-                                }
-
-                            }
-
-                        }
-                        else if (userChoice == VERTICAL_CHOICE)
-                        {
-                            //looping trough each colomn
-                            for (int i = 0; i < GRID_COL; i++)
-                            {
-                                //storing the first element of each column(0, i);
-                                comparableNumber = grid[FIRST_VALUE, i];
-
-                                for (int j = 1; j < GRID_ROW; j++)
-                                {
-                                    if (grid[j, i] != comparableNumber)
-                                    {
-                                        winner = false;
-                                        break;
-                                    }
-
-                                    winner = true;
-                                }
-                                if (winner)
-                                {
-                                    Console.WriteLine($"you won {GAIN}$");
-                                    gainingLine++;
-
-                                }
-                            }
-                        }
-                        else if (userChoice == DIAGONAL_CHOICE)
-                        {
-                            int firstElement = grid[FIRST_VALUE, FIRST_VALUE];
-                            int lastElement = grid[FIRST_VALUE, 2];
-                            //DIAGONAL CHECK
-                            for (int i = 1; i < GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
-                            {
-
-                                if (grid[i, i] != firstElement)
                                     winner = false;
-                            }
-                            if (winner)
-                            {
-                                Console.WriteLine($"you won {GAIN}$");
-                                gainingLine++;
-                            }
-                            winner = true;
-                            //ANTI diagonal check
-                            for (int i = 2; i >= 1; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
-                            {
+                                    break;
 
-                                if (grid[i, i] != lastElement)
-                                    winner = false;
+                                }
+                                winner = true;
                             }
                             if (winner)
                             {
@@ -201,29 +145,82 @@ namespace Slot_Machine
                             }
 
                         }
-                        else
-                        {
 
-                            Console.WriteLine("An error occured please try again.");
-                        }
-
-                        //checking if player has won something
-                        if (gainingLine > 0)
-                        {
-                            Console.WriteLine($"your total gain for this slot is {gainingLine}");
-
-                            profit += gainingLine;
-                            playerMoney += gainingLine;
-
-                        }
-                        else
-                        {
-                            Console.WriteLine($"you lost {playerBet}");
-                            playerMoney -= playerBet;
-                            profit -= gainingLine;
-                        }
-                        Console.WriteLine();
                     }
+                    else if (userChoice == VERTICAL_CHOICE)
+                    {
+                        //looping trough each colomn
+                        for (int i = 0; i < GRID_COL; i++)
+                        {
+                            //storing the first element of each column(0, i);
+                            comparableNumber = grid[FIRST_VALUE, i];
+
+                            for (int j = 1; j < GRID_ROW; j++)
+                            {
+                                if (grid[j, i] != comparableNumber)
+                                {
+                                    winner = false;
+                                    break;
+                                }
+
+                                winner = true;
+                            }
+                            if (winner)
+                            {
+                                Console.WriteLine($"you won {GAIN}$");
+                                gainingLine++;
+
+                            }
+                        }
+                    }
+                    else if (userChoice == DIAGONAL_CHOICE)
+                    {
+                        int firstElement = grid[FIRST_VALUE, FIRST_VALUE];
+                        int lastElement = grid[FIRST_VALUE, 2];
+                        //DIAGONAL CHECK
+                        for (int i = 1; i < GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+                        {
+
+                            if (grid[i, i] != firstElement)
+                                winner = false;
+                        }
+                        if (winner)
+                        {
+                            Console.WriteLine($"you won {GAIN}$");
+                            gainingLine++;
+                        }
+                        winner = true;
+                        //ANTI diagonal check
+                        for (int i = 2; i >= 1; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+                        {
+
+                            if (grid[i, i] != lastElement)
+                                winner = false;
+                        }
+                        if (winner)
+                        {
+                            Console.WriteLine($"you won {GAIN}$");
+                            gainingLine++;
+                        }
+                    }
+
+                    //checking if player has won something
+                    if (gainingLine > 0)
+                    {
+                        Console.WriteLine($"your total gain for this slot is {gainingLine}");
+
+                        profit += gainingLine;
+                        playerMoney += gainingLine;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"you lost {playerBet}");
+                        playerMoney -= playerBet;
+                        profit -= gainingLine;
+                    }
+                    Console.WriteLine();
+                    
                 }
                 Console.WriteLine($"you quitted the game with {profit}. see you");
             }
