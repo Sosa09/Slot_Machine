@@ -83,7 +83,7 @@ namespace Slot_Machine
 
                     //Display the winning choices
                     //possibleChoices are Horizontal, Vertical or Diagonal
-                    for (int i = 0; i <= possibleChoices.Length; i++)
+                    for (int i = 0; i < possibleChoices.Length; i++)
                     {
                         Console.WriteLine($"{i}: {possibleChoices[i]}");
                     }
