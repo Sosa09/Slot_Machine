@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System.Data.SqlTypes;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
@@ -63,20 +64,23 @@ namespace Slot_Machine
                     Console.WriteLine($"Your total profit: {profit}\n");
 
                     //BET MIN 1$ max 3$
-                    Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn 1$ per winning slot");
+                    Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn {GAIN}$ per winning slot");
 
-                    //Validating playerbet input should be 3
-                    if (!int.TryParse(Console.ReadLine(), out int playerBet))
+             
+                    //resetting player bet
+                    int playerBet = 0;
+                    //Validating playerbet input should be 3           
+                    while (playerBet < MINIMUM_BET)
                     {
-                        Console.WriteLine($"{playerBet} is not a valid number, please try again!");
-                        break;
-                    }
-
-                    //check if player has ennough money to play and if he has entered the minimum bet
-                    if (playerBet < MINIMUM_BET || playerMoney < playerBet)
-                    { 
+                        //Validate userinput must be a valid int only shown if userinput not an int
+                        if(!int.TryParse(Console.ReadLine(), out playerBet))
+                        {
+                            Console.WriteLine($"{playerBet} please enter a valid number\n" +
+                                                          $"please try again!");
+                   
+                        }
+                        
                         Console.WriteLine($"Minimum bet is {MINIMUM_BET}");
-                        break;
                     }
 
 
@@ -89,14 +93,17 @@ namespace Slot_Machine
                     }
 
                     //Ask user to input his choice and store it in choice
-                    char choice = Console.ReadKey(false).KeyChar; 
+                    char choice = Console.ReadKey(false).KeyChar;
+                    int index = 0;
 
                     //validating user input and checking if choice is inside valid possible range
-                    if (!int.TryParse(choice.ToString(), out int index) || index >= possibleChoices.Length)
+                    while(!int.TryParse(choice.ToString(), out index) || index >= possibleChoices.Length)
                     {
-                         
+                        //error displayed if user choice is ouside of range or not a valid digit
                         Console.WriteLine($"An error occured with your input {index} is invalid.");
-                        break;
+
+                        //asking user to input his choice again
+                        choice = Console.ReadKey(false).KeyChar;
 
                     }
                     
