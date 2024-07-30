@@ -30,12 +30,13 @@ namespace Slot_Machine
             const int DIFFICULTY = 2; //Which is easy. random will generate nr in grid between 0 and 2
 
             //Defining Grid ROW and COL Size
-            const int GRID_ROW = 3;
-            const int GRID_COL = 3;
+            const int GRID_ROW = 4;
+            const int GRID_COL = 4;
 
-            const int FIRST_VALUE = 0;//Will be used to get the first value of the 2d array (FIRST_VALUE,FIRST_VALUE)
-            const int LAST_ROW_VALUE = GRID_ROW;//Will be used to get the first value of the 2d array (FIRST_VALUE,FIRST_VALUE)
-            const int LAST_COL_VALUE = GRID_COL;//Will be used to get the first value of the 2d array (FIRST_VALUE,FIRST_VALUE)
+            //Define the GRID
+            int[,] grid = new int[GRID_ROW, GRID_COL];
+
+
 
 
             const int GAIN = 1;//Total dollar per winning line
@@ -44,8 +45,7 @@ namespace Slot_Machine
             int profit = 0; //loses or winnings of the users
 
             bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
-            //Define the GRID
-            int[,] grid = new int[GRID_ROW, GRID_COL];
+
 
             //set up the winning choices
             string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
@@ -127,20 +127,23 @@ namespace Slot_Machine
 
                     bool winner = true;
                     int gainingLines = 0; //will hold all the dollar for each loop and add it to the total profit
-                    int comparableNumber = 0;
+
+                    //store the first and last value needed for comparision in the different options
+                    int firstValue = grid[grid.GetLowerBound(0), grid.GetLowerBound(1)];
+                    int lastValue = grid[grid.GetUpperBound(0), grid.GetUpperBound(1)];
 
                     if (userChoice == HORIZONTAL_CHOICE)
                     {
 
                         for (int i = 0; i < GRID_ROW; i++)
                         {
-                            comparableNumber = grid[i, FIRST_VALUE];
+                        
                             winner = true;
                             //looping through the rest of the row since first value is the comparableNumber
                             for (int j = 1; j < GRID_COL; j++)
                             {
                                 int currentCell = grid[i, j];
-                                if (currentCell != comparableNumber)
+                                if (currentCell != firstValue)
                                 {
                                     winner = false;
                                     break;
@@ -163,11 +166,11 @@ namespace Slot_Machine
                         for (int i = 0; i < GRID_COL; i++)
                         {
                             //storing the first element of each column(0, i);
-                            comparableNumber = grid[FIRST_VALUE, i];
+              
                             winner = true;
                             for (int j = 1; j < GRID_ROW; j++)
                             {
-                                if (grid[j, i] != comparableNumber)
+                                if (grid[j, i] != firstValue)
                                 {
                                     winner = false;
                                     break;
@@ -185,13 +188,13 @@ namespace Slot_Machine
                     }
                     else if (userChoice == DIAGONAL_CHOICE)
                     {
-                        int firstElement = grid[FIRST_VALUE, FIRST_VALUE];
-                        int lastElement = grid[FIRST_VALUE, 2];
+
+
                         //DIAGONAL CHECK
                         for (int i = 1; i < GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
                         {
 
-                            if (grid[i, i] != firstElement)
+                            if (grid[i, i] != firstValue)
                                 winner = false;
                         }
                         if (winner)
@@ -201,10 +204,10 @@ namespace Slot_Machine
                         }
                         winner = true;
                         //ANTI diagonal check
-                        for (int i = 2; i >= 1; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+                        for (int i = GRID_ROW - 1; i >= 1; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
                         {
 
-                            if (grid[i, i] != lastElement)
+                            if (grid[i, i] != lastValue)  
                                 winner = false;
                         }
                         if (winner)
