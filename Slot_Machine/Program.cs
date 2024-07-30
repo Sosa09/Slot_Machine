@@ -21,24 +21,20 @@ namespace Slot_Machine
             const string VERTICAL_CHOICE = "Vertical";
             const string DIAGONAL_CHOICE = "Diagonal";
 
-         
-            const int START_MONEY = 30; //virtual money every gamer starts with 
+            const int START_MONEY = 100; //virtual money every gamer starts with 
             const int MINIMUM_BET = 3; //Minimum bet
-
-
 
             const int DIFFICULTY = 2; //Which is easy. random will generate nr in grid between 0 and 2
 
             //Defining Grid ROW and COL Size
-            const int GRID_ROW = 4;
-            const int GRID_COL = 4;
+            const int GRID_ROW = 3;
+            const int GRID_COL = 3;
 
             //Define the GRID
             int[,] grid = new int[GRID_ROW, GRID_COL];
 
-
-
-
+            int firstValue = 0;
+            int lastValue = 0;
             const int GAIN = 1;//Total dollar per winning line
 
             int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
@@ -57,7 +53,7 @@ namespace Slot_Machine
                 while (isPlayerMoneyNotZero)
                 {
                     if(playerMoney < MINIMUM_BET)
-                        isPlayerMoneyNotZero = true;
+                        isPlayerMoneyNotZero = false;
 
                     //Displaying player's total money and profit
                     Console.WriteLine($"Your total money: {playerMoney}");
@@ -69,6 +65,7 @@ namespace Slot_Machine
              
                     //resetting player bet
                     int playerBet = 0;
+
                     //Validating playerbet input should be 3           
                     while (playerBet < MINIMUM_BET)
                     {
@@ -128,9 +125,7 @@ namespace Slot_Machine
                     bool winner = true;
                     int gainingLines = 0; //will hold all the dollar for each loop and add it to the total profit
 
-                    //store the first and last value needed for comparision in the different options
-                    int firstValue = grid[grid.GetLowerBound(0), grid.GetLowerBound(1)];
-                    int lastValue = grid[grid.GetUpperBound(0), grid.GetUpperBound(1)];
+    
 
                     if (userChoice == HORIZONTAL_CHOICE)
                     {
@@ -139,6 +134,7 @@ namespace Slot_Machine
                         {
                         
                             winner = true;
+                            firstValue = grid[i, 0];
                             //looping through the rest of the row since first value is the comparableNumber
                             for (int j = 1; j < GRID_COL; j++)
                             {
@@ -168,7 +164,8 @@ namespace Slot_Machine
                             //storing the first element of each column(0, i);
               
                             winner = true;
-                            for (int j = 1; j < GRID_ROW; j++)
+                            firstValue = grid[0, i];
+                            for (int j = 0; j < GRID_ROW; j++)
                             {
                                 if (grid[j, i] != firstValue)
                                 {
@@ -189,30 +186,47 @@ namespace Slot_Machine
                     else if (userChoice == DIAGONAL_CHOICE)
                     {
 
+                        //store the firstvalue from first row and last value from the first row needed for comparision in the different options
+                        firstValue = grid[grid.GetLowerBound(0), grid.GetLowerBound(1)];
+                        lastValue = grid[grid.GetLowerBound(0), grid.GetUpperBound(0)];
 
                         //DIAGONAL CHECK
                         for (int i = 1; i < GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
                         {
-
-                            if (grid[i, i] != firstValue)
+                            var actualValue = grid[i, i];
+                            if (actualValue != firstValue)
+                            {
                                 winner = false;
+                                break;
+                            }
                         }
                         if (winner)
                         {
-                            Console.WriteLine($"you won {GAIN}$");
+                            Console.WriteLine($"you won {GAIN} left to right$");
                             gainingLines++;
                         }
-                        winner = true;
-                        //ANTI diagonal check
-                        for (int i = GRID_ROW - 1; i >= 1; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
-                        {
 
-                            if (grid[i, i] != lastValue)  
+                        winner = true;
+                        int currentCol = 0;
+                        //ANTI diagonal check
+                        for (int i = grid.GetUpperBound(0); i >= 0; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+                        {
+                    
+                            var actualValue = grid[i, currentCol];
+                            
+                            if (actualValue != lastValue)
+                            {
                                 winner = false;
+                                break;
+
+                            }
+                            currentCol++;
+                            
+        
                         }
                         if (winner)
                         {
-                            Console.WriteLine($"you won {GAIN}$");
+                            Console.WriteLine($"you won {GAIN} right to left$");
                             gainingLines++;
                         }
                     }
