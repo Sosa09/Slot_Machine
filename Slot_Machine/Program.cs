@@ -15,16 +15,13 @@ namespace Slot_Machine
             //instantiating Random class to get random numbers for the slot machine
             Random random = new Random();
             
-
             int firstValue = 0;
             int lastValue = 0;
             
-
-            int playerMoney = Constants.START_MONEY; //assigning the start money right away, it will hold the total money after the game
+            int wallet = Constants.START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profit = 0; //loses or winnings of the users
 
             bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
-
 
             //set up the winning choices
             string[] possibleChoices = { Constants.HORIZONTAL_CHOICE, Constants.VERTICAL_CHOICE, Constants.DIAGONAL_CHOICE };
@@ -35,35 +32,15 @@ namespace Slot_Machine
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
                 while (isPlayerMoneyNotZero)
                 {
-                    if(playerMoney < Constants.MINIMUM_BET)
+                    if(wallet < Constants.MINIMUM_BET)
                         isPlayerMoneyNotZero = false;
 
-                    //Displaying player's total money and profit
-                    Console.WriteLine($"Your total money: {playerMoney}");
-                    Console.WriteLine($"Your total profit: {profit}\n");
-
-                    //BET MIN 1$ max 3$
-                    Console.WriteLine($"Please bet minimum {Constants.MINIMUM_BET} dollars to spin, you'll earn {Constants.GAIN}$ per winning slot");
-
+                    //PLACEHOLDER SHOW PLAYER STATUS AND RULE !
+                    UserInterface.GetGamerCurrentPlayStatus(wallet, profit);
+                    UserInterface.ShowGameMinimumRequirment();
              
                     //resetting player bet
-                    int playerBet = 0;
-
-                    //Validating playerbet input should be 3           
-                    while (playerBet < Constants.MINIMUM_BET)
-                    {
-                        //Validate userinput must be a valid int only shown if userinput not an int
-                        if(!int.TryParse(Console.ReadLine(), out playerBet))
-                        {
-                            Console.WriteLine($"{playerBet} please enter a valid number\n" +
-                                                          $"please try again!");
-                   
-                        }
-                        
-                        Console.WriteLine($"Minimum bet is {Constants.MINIMUM_BET}");
-                    }
-
-
+                    int playerBet = UserInterface.GetGamerBet();
 
                     //Display the winning choices
                     //possibleChoices are Horizontal, Vertical or Diagonal
@@ -220,13 +197,13 @@ namespace Slot_Machine
 
                         Console.WriteLine($"Total win for this slot {gainingLines}");
                         profit += gainingLines;
-                        playerMoney += gainingLines;
+                        wallet += gainingLines;
 
                     }
                     else
                     {
                         Console.WriteLine($"you lost your bet {playerBet}");
-                        playerMoney -= playerBet;
+                        wallet -= playerBet;
                         profit -= gainingLines;
                     }
                     
