@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static Slot_Machine.Program;
 
 namespace Slot_Machine
 {
@@ -36,11 +38,11 @@ namespace Slot_Machine
         public static int GetGamerBet()
         {
             int playerBet = 0;
-            bool betNotValid = Constants.BETNOTVALID;
-            while (betNotValid)
+            bool gamerBetValidated = Constants.BETNOTVALID;
+            while (gamerBetValidated)
             {
                 string gamerBet = Console.ReadLine();
-                betNotValid = ValidateGamerBet(gamerBet);
+                gamerBetValidated = GamerBetValidated(gamerBet);
             }
             return playerBet;
         }
@@ -50,7 +52,7 @@ namespace Slot_Machine
         /// </summary>
         /// <param name="gamerBet"></param>
         /// <returns></returns>
-        private static bool ValidateGamerBet(string gamerBet)
+        private static bool GamerBetValidated(string gamerBet)
         {           
             if (!int.TryParse(gamerBet, out int gamerBetParsed))
             {
@@ -64,5 +66,48 @@ namespace Slot_Machine
             }
             return Constants.BETVALID;            
         }
+
+        public static void DisplayGamePossibilities(string[] possiblePlayDirection)
+        {
+            //Display the winning choices
+            //possiblePlayDirections are Horizontal, Vertical or Diagonal
+            for (int i = 0; i < possiblePlayDirection.Length; i++)
+            {
+                Console.WriteLine($"{i}: {possiblePlayDirection[i]}");
+            }
+        }
+
+        public static PlayDirection GetGamerDirection(string[] possiblePlayDirection)
+        {
+            bool gamerDirectionChoiceNotValid = true;
+            char gamerDirectionChoice = new char();
+            while (gamerDirectionChoiceNotValid)
+            {
+                gamerDirectionChoice = Console.ReadKey(false).KeyChar;
+                gamerDirectionChoiceNotValid = GamerDirectionChoiceValidated(gamerDirectionChoice);
+            }
+
+            if (gamerDirectionChoice == Constants.HORIZONTAL)
+                return PlayDirection.Horizontal;
+            else if (gamerDirectionChoice == Constants.VERTICAL)
+                return PlayDirection.Vertical;
+            else
+                return PlayDirection.Diagonal;
+            
+        }
+
+        private static bool GamerDirectionChoiceValidated(int gamerDirectionChoice)
+        {
+            //validating user input and checking if choice is inside valid possible range
+            while (gamerDirectionChoice >= Constants.MAX_PLAY_DIRECTIONS)
+            {
+                //error displayed if user choice is ouside of range or not a valid digit
+                Console.WriteLine($"Please enter a valid direction choice, {gamerDirectionChoice} is invalid.");
+                return false;
+            }
+            return true;
+        }
+
+
     }
 }

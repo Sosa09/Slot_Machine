@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System.Data;
 using System.Data.SqlTypes;
 using System.Net.Http.Headers;
 using System.Reflection.Metadata;
@@ -7,9 +8,14 @@ using System.Security.Cryptography;
 
 namespace Slot_Machine
 {
-    internal class Program
+    public class Program
     {
-
+        public enum PlayDirection
+        {
+            Horizontal,
+            Vertical,
+            Diagonal
+        }
         static void Main(string[] args)
         {
             //instantiating Random class to get random numbers for the slot machine
@@ -24,16 +30,18 @@ namespace Slot_Machine
             bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
 
             //set up the winning choices
-            string[] possibleChoices = { Constants.HORIZONTAL_CHOICE, Constants.VERTICAL_CHOICE, Constants.DIAGONAL_CHOICE };
+            string[] possiblePlayDirections = { PlayDirection.Horizontal.ToString(), PlayDirection.Vertical.ToString(), PlayDirection.Diagonal.ToString() };
             int[,] grid = new int[Constants.GRID_ROW, Constants.GRID_COL];
             //FIRST WHILE LOOP TO KEEP THE GAME RUNNING AFTER EACH PLAY
             while (true)
-            {
+            {                
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
                 while (isPlayerMoneyNotZero)
-                {
+                {                    
                     if(wallet < Constants.MINIMUM_BET)
                         isPlayerMoneyNotZero = false;
+                    bool winner = true;
+                    int gainingLines = 0; //will hold all the dollar for each loop and add it to the total profit
 
                     //PLACEHOLDER SHOW PLAYER STATUS AND RULE !
                     UserInterface.GetGamerCurrentPlayStatus(wallet, profit);
@@ -42,32 +50,11 @@ namespace Slot_Machine
                     //resetting player bet
                     int playerBet = UserInterface.GetGamerBet();
 
-                    //Display the winning choices
-                    //possibleChoices are Horizontal, Vertical or Diagonal
-                    for (int i = 0; i < possibleChoices.Length; i++)
-                    {
-                        Console.WriteLine($"{i}: {possibleChoices[i]}");
-                    }
+                    UserInterface.DisplayGamePossibilities(possiblePlayDirections);
 
                     //Ask user to input his choice and store it in choice
-                    char choice = Console.ReadKey(false).KeyChar;
-                    int index = 0;
-
-                    //validating user input and checking if choice is inside valid possible range
-                    while(!int.TryParse(choice.ToString(), out index) || index >= possibleChoices.Length)
-                    {
-                        //error displayed if user choice is ouside of range or not a valid digit
-                        Console.WriteLine($"An error occured with your input {index} is invalid.");
-
-                        //asking user to input his choice again
-                        choice = Console.ReadKey(false).KeyChar;
-
-                    }
-                    
-                    //storing user choice 
-                    var userChoice = possibleChoices[index];
-                    Console.WriteLine();
-
+                    PlayDirection gamerPlayDirectionChoice = UserInterface.GetGamerDirection(possiblePlayDirections);
+ 
                     //Design the grid with the random generated numbers
                     for (int i = 0; i < Constants.GRID_ROW; i++)
                     {
@@ -79,20 +66,13 @@ namespace Slot_Machine
                         }
 
                         Console.WriteLine();
-
                     }
 
-                    bool winner = true;
-                    int gainingLines = 0; //will hold all the dollar for each loop and add it to the total profit
-
-    
-
-                    if (userChoice == Constants.HORIZONTAL_CHOICE)
+                    if (gamerPlayDirectionChoice == PlayDirection.Horizontal)
                     {
 
                         for (int i = 0; i < Constants.GRID_ROW; i++)
-                        {
-                        
+                        {                        
                             winner = true;
                             firstValue = grid[i, 0];
                             //looping through the rest of the row since first value is the comparableNumber
@@ -103,20 +83,16 @@ namespace Slot_Machine
                                 {
                                     winner = false;
                                     break;
-
-                                }
-                 
+                                }                 
                             }
                             if (winner)
                             {
                                 Console.WriteLine($"you won {Constants.GAIN}$");
                                 gainingLines++;
                             }
-
                         }
-
                     }
-                    else if (userChoice == Constants.VERTICAL_CHOICE)
+                    else if (gamerPlayDirectionChoice == PlayDirection.Vertical)
                     {
                         //looping trough each colomn
                         for (int i = 0; i < Constants.GRID_COL; i++)
@@ -131,25 +107,20 @@ namespace Slot_Machine
                                 {
                                     winner = false;
                                     break;
-                                }
-
-                            
+                                }                            
                             }
                             if (winner)
                             {
                                 Console.WriteLine($"you won {Constants.GAIN}$");
                                 gainingLines++;
-
                             }
                         }
                     }
-                    else if (userChoice == Constants.DIAGONAL_CHOICE)
+                    else if (gamerPlayDirectionChoice == PlayDirection.Diagonal)
                     {
-
                         //store the firstvalue from first row and last value from the first row needed for comparision in the different options
                         firstValue = grid[grid.GetLowerBound(0), grid.GetLowerBound(1)];
                         lastValue = grid[grid.GetLowerBound(0), grid.GetUpperBound(0)];
-
                         //DIAGONAL CHECK
                         for (int i = 1; i < Constants.GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
                         {
@@ -165,7 +136,6 @@ namespace Slot_Machine
                             Console.WriteLine($"you won {Constants.GAIN} left to right$");
                             gainingLines++;
                         }
-
                         winner = true;
                         int currentCol = 0;
                         //ANTI diagonal check
@@ -178,11 +148,8 @@ namespace Slot_Machine
                             {
                                 winner = false;
                                 break;
-
                             }
-                            currentCol++;
-                            
-        
+                            currentCol++;                                    
                         }
                         if (winner)
                         {
@@ -194,11 +161,9 @@ namespace Slot_Machine
                     //checking if player has won something
                     if (gainingLines > 0)
                     {
-
                         Console.WriteLine($"Total win for this slot {gainingLines}");
                         profit += gainingLines;
                         wallet += gainingLines;
-
                     }
                     else
                     {
