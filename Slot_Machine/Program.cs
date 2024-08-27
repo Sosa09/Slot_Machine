@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System.CodeDom.Compiler;
 using System.Data;
 using System.Data.SqlTypes;
 using System.Net.Http.Headers;
@@ -55,18 +56,14 @@ namespace Slot_Machine
                     //Ask user to input his choice and store it in choice
                     PlayDirection gamerPlayDirectionChoice = UserInterface.GetGamerDirection(possiblePlayDirections);
  
-                    //Design the grid with the random generated numbers
-                    for (int i = 0; i < Constants.GRID_ROW; i++)
+                    //LOGIC Generate random numbers for the grid 0 and 1 s
+                    int[] randomNumbers = new int[Constants.GRID_ROW * Constants.GRID_COL];
+                    for (int i = 0; i < randomNumbers.Length; i++)
                     {
-                        for (int j = 0; j < Constants.GRID_COL; j++)
-                        {
-                            int randomNr = random.Next(Constants.DIFFICULTY);
-                            grid[i, j] = randomNr;
-                            Console.Write($"{randomNr} ");
-                        }
-
-                        Console.WriteLine();
+                        randomNumbers[i] = random.Next(Constants.DIFFICULTY);
                     }
+
+                    UserInterface.DisplayGrid(grid, randomNumbers);
 
                     if (gamerPlayDirectionChoice == PlayDirection.Horizontal)
                     {

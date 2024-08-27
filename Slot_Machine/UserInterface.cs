@@ -38,11 +38,11 @@ namespace Slot_Machine
         public static int GetGamerBet()
         {
             int playerBet = 0;
-            bool gamerBetValidated = Constants.BETNOTVALID;
-            while (gamerBetValidated)
+            bool gamerBetValid= false;
+            while (!gamerBetValid)
             {
                 string gamerBet = Console.ReadLine();
-                gamerBetValidated = GamerBetValidated(gamerBet);
+                gamerBetValid = GamerBetValidated(gamerBet);
             }
             return playerBet;
         }
@@ -79,12 +79,13 @@ namespace Slot_Machine
 
         public static PlayDirection GetGamerDirection(string[] possiblePlayDirection)
         {
-            bool gamerDirectionChoiceNotValid = true;
+            bool gamerDirectionChoiceValid = false;
             char gamerDirectionChoice = new char();
-            while (gamerDirectionChoiceNotValid)
+
+            while (!gamerDirectionChoiceValid)
             {
-                gamerDirectionChoice = Console.ReadKey(false).KeyChar;
-                gamerDirectionChoiceNotValid = GamerDirectionChoiceValidated(gamerDirectionChoice);
+                gamerDirectionChoice = Console.ReadKey(true).KeyChar;
+                gamerDirectionChoiceValid = GamerDirectionChoiceValidated(gamerDirectionChoice);
             }
 
             if (gamerDirectionChoice == Constants.HORIZONTAL)
@@ -99,7 +100,8 @@ namespace Slot_Machine
         private static bool GamerDirectionChoiceValidated(int gamerDirectionChoice)
         {
             //validating user input and checking if choice is inside valid possible range
-            while (gamerDirectionChoice >= Constants.MAX_PLAY_DIRECTIONS)
+
+            while (gamerDirectionChoice >= Convert.ToChar(Constants.MAX_PLAY_DIRECTIONS))
             {
                 //error displayed if user choice is ouside of range or not a valid digit
                 Console.WriteLine($"Please enter a valid direction choice, {gamerDirectionChoice} is invalid.");
@@ -108,6 +110,22 @@ namespace Slot_Machine
             return true;
         }
 
+        public static void DisplayGrid(int[,] grid, int[] randomSlotNumbers)
+        {
+            int index = 0;
+            //Design the grid with the random generated numbers
+            for (int i = 0; i < Constants.GRID_ROW; i++)
+            {
+                for (int j = 0; j < Constants.GRID_COL; j++)
+                {
+                    grid[i, j] = randomSlotNumbers[index];
+                    Console.Write($"{randomSlotNumbers[index]} ");
+                    index++;
+                }
+
+                Console.WriteLine();
+            }
+        }
 
     }
 }
