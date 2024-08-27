@@ -10,49 +10,32 @@ namespace Slot_Machine
     internal class Program
     {
 
-
         static void Main(string[] args)
         {
             //instantiating Random class to get random numbers for the slot machine
             Random random = new Random();
-
-            //Defining winning line possibilities
-            const string HORIZONTAL_CHOICE = "Horizaontal";
-            const string VERTICAL_CHOICE = "Vertical";
-            const string DIAGONAL_CHOICE = "Diagonal";
-
-            const int START_MONEY = 100; //virtual money every gamer starts with 
-            const int MINIMUM_BET = 3; //Minimum bet
-
-            const int DIFFICULTY = 2; //Which is easy. random will generate nr in grid between 0 and 2
-
-            //Defining Grid ROW and COL Size
-            const int GRID_ROW = 3;
-            const int GRID_COL = 3;
-
-            //Define the GRID
-            int[,] grid = new int[GRID_ROW, GRID_COL];
+            
 
             int firstValue = 0;
             int lastValue = 0;
-            const int GAIN = 1;//Total dollar per winning line
+            
 
-            int playerMoney = START_MONEY; //assigning the start money right away, it will hold the total money after the game
+            int playerMoney = Constants.START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profit = 0; //loses or winnings of the users
 
             bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
 
 
             //set up the winning choices
-            string[] possibleChoices = { HORIZONTAL_CHOICE, VERTICAL_CHOICE, DIAGONAL_CHOICE };
-
+            string[] possibleChoices = { Constants.HORIZONTAL_CHOICE, Constants.VERTICAL_CHOICE, Constants.DIAGONAL_CHOICE };
+            int[,] grid = new int[Constants.GRID_ROW, Constants.GRID_COL];
             //FIRST WHILE LOOP TO KEEP THE GAME RUNNING AFTER EACH PLAY
             while (true)
             {
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
                 while (isPlayerMoneyNotZero)
                 {
-                    if(playerMoney < MINIMUM_BET)
+                    if(playerMoney < Constants.MINIMUM_BET)
                         isPlayerMoneyNotZero = false;
 
                     //Displaying player's total money and profit
@@ -60,14 +43,14 @@ namespace Slot_Machine
                     Console.WriteLine($"Your total profit: {profit}\n");
 
                     //BET MIN 1$ max 3$
-                    Console.WriteLine($"Please bet minimum {MINIMUM_BET} dollars to spin, you'll earn {GAIN}$ per winning slot");
+                    Console.WriteLine($"Please bet minimum {Constants.MINIMUM_BET} dollars to spin, you'll earn {Constants.GAIN}$ per winning slot");
 
              
                     //resetting player bet
                     int playerBet = 0;
 
                     //Validating playerbet input should be 3           
-                    while (playerBet < MINIMUM_BET)
+                    while (playerBet < Constants.MINIMUM_BET)
                     {
                         //Validate userinput must be a valid int only shown if userinput not an int
                         if(!int.TryParse(Console.ReadLine(), out playerBet))
@@ -77,7 +60,7 @@ namespace Slot_Machine
                    
                         }
                         
-                        Console.WriteLine($"Minimum bet is {MINIMUM_BET}");
+                        Console.WriteLine($"Minimum bet is {Constants.MINIMUM_BET}");
                     }
 
 
@@ -109,11 +92,11 @@ namespace Slot_Machine
                     Console.WriteLine();
 
                     //Design the grid with the random generated numbers
-                    for (int i = 0; i < GRID_ROW; i++)
+                    for (int i = 0; i < Constants.GRID_ROW; i++)
                     {
-                        for (int j = 0; j < GRID_COL; j++)
+                        for (int j = 0; j < Constants.GRID_COL; j++)
                         {
-                            int randomNr = random.Next(DIFFICULTY);
+                            int randomNr = random.Next(Constants.DIFFICULTY);
                             grid[i, j] = randomNr;
                             Console.Write($"{randomNr} ");
                         }
@@ -127,16 +110,16 @@ namespace Slot_Machine
 
     
 
-                    if (userChoice == HORIZONTAL_CHOICE)
+                    if (userChoice == Constants.HORIZONTAL_CHOICE)
                     {
 
-                        for (int i = 0; i < GRID_ROW; i++)
+                        for (int i = 0; i < Constants.GRID_ROW; i++)
                         {
                         
                             winner = true;
                             firstValue = grid[i, 0];
                             //looping through the rest of the row since first value is the comparableNumber
-                            for (int j = 1; j < GRID_COL; j++)
+                            for (int j = 1; j < Constants.GRID_COL; j++)
                             {
                                 int currentCell = grid[i, j];
                                 if (currentCell != firstValue)
@@ -149,23 +132,23 @@ namespace Slot_Machine
                             }
                             if (winner)
                             {
-                                Console.WriteLine($"you won {GAIN}$");
+                                Console.WriteLine($"you won {Constants.GAIN}$");
                                 gainingLines++;
                             }
 
                         }
 
                     }
-                    else if (userChoice == VERTICAL_CHOICE)
+                    else if (userChoice == Constants.VERTICAL_CHOICE)
                     {
                         //looping trough each colomn
-                        for (int i = 0; i < GRID_COL; i++)
+                        for (int i = 0; i < Constants.GRID_COL; i++)
                         {
                             //storing the first element of each column(0, i);
               
                             winner = true;
                             firstValue = grid[0, i];
-                            for (int j = 0; j < GRID_ROW; j++)
+                            for (int j = 0; j < Constants.GRID_ROW; j++)
                             {
                                 if (grid[j, i] != firstValue)
                                 {
@@ -177,13 +160,13 @@ namespace Slot_Machine
                             }
                             if (winner)
                             {
-                                Console.WriteLine($"you won {GAIN}$");
+                                Console.WriteLine($"you won {Constants.GAIN}$");
                                 gainingLines++;
 
                             }
                         }
                     }
-                    else if (userChoice == DIAGONAL_CHOICE)
+                    else if (userChoice == Constants.DIAGONAL_CHOICE)
                     {
 
                         //store the firstvalue from first row and last value from the first row needed for comparision in the different options
@@ -191,7 +174,7 @@ namespace Slot_Machine
                         lastValue = grid[grid.GetLowerBound(0), grid.GetUpperBound(0)];
 
                         //DIAGONAL CHECK
-                        for (int i = 1; i < GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+                        for (int i = 1; i < Constants.GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
                         {
                             var actualValue = grid[i, i];
                             if (actualValue != firstValue)
@@ -202,7 +185,7 @@ namespace Slot_Machine
                         }
                         if (winner)
                         {
-                            Console.WriteLine($"you won {GAIN} left to right$");
+                            Console.WriteLine($"you won {Constants.GAIN} left to right$");
                             gainingLines++;
                         }
 
@@ -226,7 +209,7 @@ namespace Slot_Machine
                         }
                         if (winner)
                         {
-                            Console.WriteLine($"you won {GAIN} right to left$");
+                            Console.WriteLine($"you won {Constants.GAIN} right to left$");
                             gainingLines++;
                         }
                     }
