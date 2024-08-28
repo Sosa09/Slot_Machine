@@ -42,13 +42,11 @@ namespace Slot_Machine
                     if(wallet < Constants.MINIMUM_BET)
                         isPlayerMoneyNotZero = false;
                     bool winner = true;
-                    int gainingLines = 0; //will hold all the dollar for each loop and add it to the total profit
-
-                    //PLACEHOLDER SHOW PLAYER STATUS AND RULE !
+                    int winningLines = 0; //will hold all the dollar for each loop and add it to the total profit
+                  
                     UserInterface.GetGamerCurrentPlayStatus(wallet, profit);
                     UserInterface.ShowGameMinimumRequirment();
-             
-                    //resetting player bet
+                                 
                     int playerBet = UserInterface.GetGamerBet();
 
                     UserInterface.DisplayGamePossibilities(possiblePlayDirections);
@@ -67,11 +65,11 @@ namespace Slot_Machine
 
                     if (gamerPlayDirectionChoice == PlayDirection.Horizontal)
                     {
-
                         for (int i = 0; i < Constants.GRID_ROW; i++)
-                        {                        
-                            winner = true;
+                        {
+                            winner = true; //reset winner
                             firstValue = grid[i, 0];
+
                             //looping through the rest of the row since first value is the comparableNumber
                             for (int j = 1; j < Constants.GRID_COL; j++)
                             {
@@ -84,8 +82,8 @@ namespace Slot_Machine
                             }
                             if (winner)
                             {
-                                Console.WriteLine($"you won {Constants.GAIN}$");
-                                gainingLines++;
+                                UserInterface.DisplayWinningSlotLine();                        
+                                winningLines++;
                             }
                         }
                     }
@@ -108,18 +106,18 @@ namespace Slot_Machine
                             }
                             if (winner)
                             {
-                                Console.WriteLine($"you won {Constants.GAIN}$");
-                                gainingLines++;
+                                UserInterface.DisplayWinningSlotLine();
+                                winningLines++;
                             }
                         }
                     }
                     else if (gamerPlayDirectionChoice == PlayDirection.Diagonal)
                     {
-                        //store the firstvalue from first row and last value from the first row needed for comparision in the different options
+                        
                         firstValue = grid[grid.GetLowerBound(0), grid.GetLowerBound(1)];
                         lastValue = grid[grid.GetLowerBound(0), grid.GetUpperBound(0)];
-                        //DIAGONAL CHECK
-                        for (int i = 1; i < Constants.GRID_ROW; i++)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+                        
+                        for (int i = 1; i < Constants.GRID_ROW; i++)
                         {
                             var actualValue = grid[i, i];
                             if (actualValue != firstValue)
@@ -130,13 +128,13 @@ namespace Slot_Machine
                         }
                         if (winner)
                         {
-                            Console.WriteLine($"you won {Constants.GAIN} left to right$");
-                            gainingLines++;
+                            UserInterface.DisplayWinningSlotLine();
+                            winningLines++;
                         }
                         winner = true;
                         int currentCol = 0;
-                        //ANTI diagonal check
-                        for (int i = grid.GetUpperBound(0); i >= 0; i--)//since int is a value type it gets its own place int he tack nd will not share the same ref as actualIndex
+
+                        for (int i = grid.GetUpperBound(0); i >= 0; i--)
                         {
                     
                             var actualValue = grid[i, currentCol];
@@ -150,30 +148,31 @@ namespace Slot_Machine
                         }
                         if (winner)
                         {
-                            Console.WriteLine($"you won {Constants.GAIN} right to left$");
-                            gainingLines++;
+                            UserInterface.DisplayWinningSlotLine();
+                            winningLines++;
                         }
                     }
 
                     //checking if player has won something
-                    if (gainingLines > 0)
+                    if (winningLines > 0)
                     {
-                        Console.WriteLine($"Total win for this slot {gainingLines}");
-                        profit += gainingLines;
-                        wallet += gainingLines;
+                        
+                        profit += winningLines;
+                        wallet += winningLines + playerBet;
+                        UserInterface.DisplaySlotResult(winningLines, profit);
                     }
                     else
                     {
-                        Console.WriteLine($"you lost your bet {playerBet}");
+                        
+                        profit -= winningLines;
                         wallet -= playerBet;
-                        profit -= gainingLines;
+                        UserInterface.DisplaySlotResult(winningLines, playerBet);
                     }
-                    
-                    Console.WriteLine();
-                    
                 }
-                Console.WriteLine($"you quitted the game with {profit}. see you");
+
+                UserInterface.DisplayEndMessage(profit);
             }
+      
         }
     }
 }

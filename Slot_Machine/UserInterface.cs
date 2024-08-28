@@ -29,7 +29,7 @@ namespace Slot_Machine
         {
             //BET MIN 1$ max 3$
             Console.WriteLine($"A minimum bet of {Constants.MINIMUM_BET} is required to spin.\n" + 
-                               "You'll earn {Constants.GAIN}$ per winning slot");
+                              $"You'll earn {Constants.GAIN} per winning slot");
         }
         /// <summary>
         /// 
@@ -125,7 +125,7 @@ namespace Slot_Machine
         /// <param name="randomSlotNumbers"></param>
         public static void DisplayGrid(int[,] grid, int[] randomSlotNumbers)
         {
-            Console.Clear();
+
             int index = 0;
             //Design the grid with the random generated numbers
             for (int i = 0; i < Constants.GRID_ROW; i++)
@@ -140,8 +140,29 @@ namespace Slot_Machine
                 Console.WriteLine();
             }
         }
-
-        
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void DisplayWinningSlotLine()
+        {
+            Console.WriteLine($"you won {Constants.GAIN}$");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void DisplaySlotResult(int winningLines,int total)
+        {
+            if (winningLines > 0)
+                Console.WriteLine($"Amazing, you just made {total} of profit.");
+            else
+                Console.WriteLine($"Damn, you lost your bet {total}");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void DisplayEndMessage(int profit)
+        {
+            Console.WriteLine($"you quitted the game with {profit}. see you");
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace Slot_Machine
         public const char   HORIZONTAL  = '0';
         public const char   VERTICAL = '1';
         public const char   DIAGONAL = '2';
-        public const char    MAX_PLAY_DIRECTIONS = '3';
+        public const char   MAX_PLAY_DIRECTIONS = '3';
         public const int    START_MONEY = 100; //virtual money every gamer starts with 
         public const int    MINIMUM_BET = 3; //Minimum bet
         public const int    DIFFICULTY  = 2; //Which is easy. random will generate nr in grid between 0 and 2
