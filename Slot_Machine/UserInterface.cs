@@ -118,6 +118,7 @@ namespace Slot_Machine
             }
             return true;
         }
+ 
         /// <summary>
         /// 
         /// </summary>
@@ -127,12 +128,12 @@ namespace Slot_Machine
         {
 
             int index = 0;
-            //Design the grid with the random generated numbers
+     
             for (int i = 0; i < Constants.GRID_ROW; i++)
             {
                 for (int j = 0; j < Constants.GRID_COL; j++)
                 {
-                    grid[i, j] = randomSlotNumbers[index];
+                    grid[i, j] = randomSlotNumbers[index];       //TODO Think of a way of implementing this into logic
                     Console.Write($"{randomSlotNumbers[index]} ");
                     index++;
                 }
