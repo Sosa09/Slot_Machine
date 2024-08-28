@@ -9,6 +9,12 @@ namespace Slot_Machine
 {
     public static class Logic
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="random"></param>
+        /// <param name="TotalGrid"></param>
+        /// <returns></returns>
         public static int[] GenerateSlotNumbers(Random random, int TotalGrid)
         {
             int[] randomNumbers = new int[TotalGrid];
@@ -18,10 +24,14 @@ namespace Slot_Machine
             }
             return randomNumbers;
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
         public static int GetHorizontalTotalWinningAreas(int[,] grid) 
         {
-            int winningArea = 0;
+            int winnerAreaCount = 0;
             for (int i = 0; i < Constants.GRID_ROW; i++)
             {
                 bool winner = true; //reset winner
@@ -40,15 +50,19 @@ namespace Slot_Machine
                 if (winner)
                 {
                     UserInterface.DisplayWinningSlotLine();
-                    winningArea++;
+                    winnerAreaCount++;
                 }
             }
-            return winningArea;
+            return winnerAreaCount;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
         public static int GetVerticalTotalWinningAreas(int[,] grid)
         {
-            int winningArea = 0;
+            int winnerAreaCount = 0;
             //looping trough each colomn
             for (int i = 0; i < Constants.GRID_COL; i++)
             {
@@ -67,10 +81,10 @@ namespace Slot_Machine
                 if (winner)
                 {
                     UserInterface.DisplayWinningSlotLine();
-                    winningArea++;
+                    winnerAreaCount++;
                 }
             }
-            return winningArea;
+            return winnerAreaCount;
         }
         /// <summary>
         /// TODO: refactor this approach
@@ -79,7 +93,7 @@ namespace Slot_Machine
         /// <returns></returns>
         public static int GetDiagonalTotalWinningAreas(int[,] grid)
         {
-            int winningArea = 0;
+            int winnerAreaCount = 0;
             int firstValue = grid[grid.GetLowerBound(0), grid.GetLowerBound(1)];
             int lastValue = grid[grid.GetLowerBound(0), grid.GetUpperBound(0)];
             bool winner = true;
@@ -96,7 +110,7 @@ namespace Slot_Machine
             if (winner)
             {
                 UserInterface.DisplayWinningSlotLine();
-                winningArea++;
+                winnerAreaCount++;
             }
             
             winner = true;
@@ -116,9 +130,29 @@ namespace Slot_Machine
             if (winner)
             {
                 UserInterface.DisplayWinningSlotLine();                
-                winningArea++;
+                winnerAreaCount++;
             }
-            return 0;
+            return winnerAreaCount;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="winnerLineCount"></param>
+        /// <param name="playerBet"></param>
+        /// <param name="profit"></param>
+        /// <param name="wallet"></param>
+        public static void UpdateGamerWallet(int winnerLineCount, int playerBet,ref int profit, ref int wallet)
+        {
+            if (winnerLineCount > 0)
+            {
+                profit += winnerLineCount;
+                wallet += winnerLineCount + playerBet;
+            }
+            else
+            {
+                profit -= winnerLineCount;
+                wallet -= playerBet;
+            }
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Slot_Machine
             int wallet = Constants.START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profit = 0; //loses or winnings of the users
 
-            bool isPlayerMoneyNotZero = true; //return true if user has no money to player anymore and will end the game
+            bool PlayerHasMoney = true; //return true if user has no money to player anymore and will end the game
 
             //set up the winning choices
             string[] possiblePlayDirections = { PlayDirection.Horizontal.ToString(), PlayDirection.Vertical.ToString(), PlayDirection.Diagonal.ToString() };
@@ -34,13 +34,12 @@ namespace Slot_Machine
             while (true)
             {                
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
-                while (isPlayerMoneyNotZero)
+                while (PlayerHasMoney)
                 {                    
                     if(wallet < Constants.MINIMUM_BET)
-                        isPlayerMoneyNotZero = false;
-
-                    bool winner = true;
-                    int winningLines = 0;
+                        PlayerHasMoney = false;
+                
+                    int winnerLineCount = 0;
                   
                     UserInterface.GetGamerCurrentPlayStatus(wallet, profit);
                     UserInterface.ShowGameMinimumRequirement();
@@ -57,29 +56,20 @@ namespace Slot_Machine
 
                     if (gamerPlayDirectionChoice == PlayDirection.Horizontal)
                     {
-                        winningLines = Logic.GetHorizontalTotalWinningAreas(grid);
+                        winnerLineCount = Logic.GetHorizontalTotalWinningAreas(grid);
                     }
                     else if (gamerPlayDirectionChoice == PlayDirection.Vertical)
                     {
-                        winningLines = Logic.GetVerticalTotalWinningAreas(grid);
+                        winnerLineCount = Logic.GetVerticalTotalWinningAreas(grid);
                     }
                     else if (gamerPlayDirectionChoice == PlayDirection.Diagonal)
                     {
-                        winningLines = Logic.GetDiagonalTotalWinningAreas(grid);                        
+                        winnerLineCount = Logic.GetDiagonalTotalWinningAreas(grid);                        
                     }
                     //checking if player has won something
-                    if (winningLines > 0)
-                    {                        
-                        profit += winningLines;
-                        wallet += winningLines + playerBet;
-                        UserInterface.DisplaySlotResult(winningLines, profit);
-                    }
-                    else
-                    {                        
-                        profit -= winningLines;
-                        wallet -= playerBet;
-                        UserInterface.DisplaySlotResult(winningLines, playerBet);
-                    }
+                    Logic.UpdateGamerWallet(winnerLineCount, playerBet, ref profit, ref wallet);
+
+                    UserInterface.DisplaySlotResult(winnerLineCount, playerBet);
                 }
                 UserInterface.DisplayEndMessage(profit);
             }      

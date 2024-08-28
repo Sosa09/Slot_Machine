@@ -37,14 +37,15 @@ namespace Slot_Machine
         /// <returns></returns>
         public static int GetGamerBet()
         {
-            int playerBet = 0;
+            string playerBet = string.Empty;
             bool gamerBetValid= false;
             while (!gamerBetValid)
             {
-                string gamerBet = Console.ReadLine();
-                gamerBetValid = GamerBetValidated(gamerBet);
+                playerBet = Console.ReadLine();
+                gamerBetValid = GamerBetValidated(playerBet);
             }
-            return playerBet;
+
+            return Convert.ToInt32(playerBet);
         }
         /// <summary>
         /// 
@@ -118,7 +119,6 @@ namespace Slot_Machine
             }
             return true;
         }
- 
         /// <summary>
         /// 
         /// </summary>
@@ -126,9 +126,7 @@ namespace Slot_Machine
         /// <param name="randomSlotNumbers"></param>
         public static void DisplayGrid(int[,] grid, int[] randomSlotNumbers)
         {
-
-            int index = 0;
-     
+            int index = 0;     
             for (int i = 0; i < Constants.GRID_ROW; i++)
             {
                 for (int j = 0; j < Constants.GRID_COL; j++)
@@ -151,10 +149,10 @@ namespace Slot_Machine
         /// <summary>
         /// 
         /// </summary>
-        public static void DisplaySlotResult(int winningLines,int total)
+        public static void DisplaySlotResult(int totalWinnerLines,int total)
         {
-            if (winningLines > 0)
-                Console.WriteLine($"Amazing, you just made {total} of profit.");
+            if (totalWinnerLines > 0)
+                Console.WriteLine($"Amazing, you just made {totalWinnerLines}. with a ${total} bet");
             else
                 Console.WriteLine($"Damn, you lost your bet {total}");
         }
