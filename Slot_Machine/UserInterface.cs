@@ -25,7 +25,7 @@ namespace Slot_Machine
         /// <summary>
         /// 
         /// </summary>
-        public static void ShowGameMinimumRequirment()
+        public static void ShowGameMinimumRequirement()
         {
             //BET MIN 1$ max 3$
             Console.WriteLine($"A minimum bet of {Constants.MINIMUM_BET} is required to spin.\n" + 

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Slot_Machine
 {
-    public class Constants
+    public static class Constants
     {
         //Defining winning line possibilities
         public const char   HORIZONTAL  = '0';
-        public const char   VERTICAL = '1';
-        public const char   DIAGONAL = '2';
+        public const char   VERTICAL    = '1';
+        public const char   DIAGONAL    = '2';
         public const char   MAX_PLAY_DIRECTIONS = '3';
         public const int    START_MONEY = 100; //virtual money every gamer starts with 
         public const int    MINIMUM_BET = 3; //Minimum bet
@@ -19,9 +19,10 @@ namespace Slot_Machine
         //Defining Grid ROW and COL Size
         public const int    GRID_ROW    = 3;
         public const int    GRID_COL    = 3;
+        public const int    TOTAL_GRID_CELLS = GRID_ROW * GRID_COL;
         public const int    GAIN        = 1;//Total dollar per winning line
-        public static bool  BETVALID    = true;
-        public static bool  BETNOTVALID = false;
+        public const bool   BETVALID    = true;
+        public const bool   BETNOTVALID = false;
     }
 }
 

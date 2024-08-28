@@ -45,7 +45,7 @@ namespace Slot_Machine
                     int winningLines = 0; //will hold all the dollar for each loop and add it to the total profit
                   
                     UserInterface.GetGamerCurrentPlayStatus(wallet, profit);
-                    UserInterface.ShowGameMinimumRequirment();
+                    UserInterface.ShowGameMinimumRequirement();
                                  
                     int playerBet = UserInterface.GetGamerBet();
 
@@ -53,13 +53,9 @@ namespace Slot_Machine
 
                     //Ask user to input his choice and store it in choice
                     PlayDirection gamerPlayDirectionChoice = UserInterface.GetGamerDirection(possiblePlayDirections);
- 
+
                     //LOGIC Generate random numbers for the grid 0 and 1 s
-                    int[] randomNumbers = new int[Constants.GRID_ROW * Constants.GRID_COL];
-                    for (int i = 0; i < randomNumbers.Length; i++)
-                    {
-                        randomNumbers[i] = random.Next(Constants.DIFFICULTY);
-                    }
+                    int[] randomNumbers = Logic.GenerateSlotNumbers(random, Constants.TOTAL_GRID_CELLS);
 
                     UserInterface.DisplayGrid(grid, randomNumbers);
 
@@ -155,15 +151,13 @@ namespace Slot_Machine
 
                     //checking if player has won something
                     if (winningLines > 0)
-                    {
-                        
+                    {                        
                         profit += winningLines;
                         wallet += winningLines + playerBet;
                         UserInterface.DisplaySlotResult(winningLines, profit);
                     }
                     else
-                    {
-                        
+                    {                        
                         profit -= winningLines;
                         wallet -= playerBet;
                         UserInterface.DisplaySlotResult(winningLines, playerBet);
@@ -171,8 +165,7 @@ namespace Slot_Machine
                 }
 
                 UserInterface.DisplayEndMessage(profit);
-            }
-      
+            }      
         }
     }
 }
