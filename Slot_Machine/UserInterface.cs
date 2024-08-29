@@ -92,14 +92,15 @@ namespace Slot_Machine
                 gamerDirectionChoice = Console.ReadKey(true).KeyChar;
                 gamerDirectionChoiceValid = GamerDirectionChoiceValidated(gamerDirectionChoice);
             }
-
-            if (gamerDirectionChoice == Constants.HORIZONTAL)
-                return PlayDirection.Horizontal;
-            else if (gamerDirectionChoice == Constants.VERTICAL)
-                return PlayDirection.Vertical;
-            else
-                return PlayDirection.Diagonal;
-            
+            switch (gamerDirectionChoice)
+            {
+                case Constants.HORIZONTAL:
+                    return PlayDirection.Horizontal;
+                case Constants.VERTICAL: 
+                    return PlayDirection.Vertical;
+                default:
+                    return PlayDirection.Diagonal;
+            }
         }
         /// <summary>
         /// 
@@ -142,17 +143,17 @@ namespace Slot_Machine
         /// </summary>
         public static void DisplayWinningSlotLine()
         {
-            Console.WriteLine($"you won {Constants.GAIN}$");
+            Console.WriteLine($" {Constants.GAIN}$");
         }
         /// <summary>
         /// 
         /// </summary>
-        public static void DisplaySlotResult(int totalWinnerLines,int total)
+        public static void DisplaySlotResult(int totalWinnerLines,int bet)
         {
             if (totalWinnerLines > 0)
-                Console.WriteLine($"Amazing, you just made {totalWinnerLines}. with a ${total} bet");
+                Console.WriteLine($"Amazing, you just made {totalWinnerLines}. with a ${bet} bet");
             else
-                Console.WriteLine($"Damn, you lost your bet {total}");
+                Console.WriteLine($"Damn, you lost your bet {bet}");
         }
         /// <summary>
         /// 

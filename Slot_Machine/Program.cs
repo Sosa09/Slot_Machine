@@ -68,7 +68,6 @@ namespace Slot_Machine
                         default:
                             break;
                     }
-
                     //checking if player has won something
                     Logic.UpdateGamerWallet(winnerLineCount, playerBet, ref profit, ref wallet);
 
