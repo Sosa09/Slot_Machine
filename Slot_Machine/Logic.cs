@@ -80,7 +80,6 @@ namespace Slot_Machine
                 }
                 if (winner)
                 {
-                    UserInterface.DisplayWinningSlotLine();
                     winnerAreaCount++;
                 }
             }
@@ -109,7 +108,6 @@ namespace Slot_Machine
             }
             if (winner)
             {
-                UserInterface.DisplayWinningSlotLine();
                 winnerAreaCount++;
             }
             
@@ -128,8 +126,7 @@ namespace Slot_Machine
                 currentCol++;
             }
             if (winner)
-            {
-                UserInterface.DisplayWinningSlotLine();                
+            {              
                 winnerAreaCount++;
             }
             return winnerAreaCount;
@@ -153,6 +150,13 @@ namespace Slot_Machine
                 profit -= winnerLineCount;
                 wallet -= playerBet;
             }
+        }
+
+        public static bool GamerHasMoney(int wallet, bool gamerWalletNotEmpty)
+        {
+            if (wallet < Constants.MINIMUM_BET)
+                return !gamerWalletNotEmpty;
+            return gamerWalletNotEmpty;
         }
     }
 }

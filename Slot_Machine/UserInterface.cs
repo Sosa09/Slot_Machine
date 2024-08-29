@@ -143,7 +143,7 @@ namespace Slot_Machine
         /// </summary>
         public static void DisplayWinningSlotLine()
         {
-            Console.WriteLine($" {Constants.GAIN}$");
+            Console.WriteLine($"Winning line, you just made {Constants.GAIN}$");
         }
         /// <summary>
         /// 
