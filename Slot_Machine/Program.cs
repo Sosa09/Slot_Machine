@@ -54,25 +54,28 @@ namespace Slot_Machine
 
                     UserInterface.DisplayGrid(grid, randomNumbers);
 
-                    if (gamerPlayDirectionChoice == PlayDirection.Horizontal)
+                    switch (gamerPlayDirectionChoice)
                     {
-                        winnerLineCount = Logic.GetHorizontalTotalWinningAreas(grid);
+                        case PlayDirection.Horizontal:
+                            winnerLineCount = Logic.GetHorizontalTotalWinningAreas(grid);
+                            break;
+                        case PlayDirection.Vertical:
+                            winnerLineCount = Logic.GetVerticalTotalWinningAreas(grid);
+                            break;
+                        case PlayDirection.Diagonal:
+                            winnerLineCount = Logic.GetDiagonalTotalWinningAreas(grid);
+                            break;
+                        default:
+                            break;
                     }
-                    else if (gamerPlayDirectionChoice == PlayDirection.Vertical)
-                    {
-                        winnerLineCount = Logic.GetVerticalTotalWinningAreas(grid);
-                    }
-                    else if (gamerPlayDirectionChoice == PlayDirection.Diagonal)
-                    {
-                        winnerLineCount = Logic.GetDiagonalTotalWinningAreas(grid);                        
-                    }
+
                     //checking if player has won something
                     Logic.UpdateGamerWallet(winnerLineCount, playerBet, ref profit, ref wallet);
 
                     UserInterface.DisplaySlotResult(winnerLineCount, playerBet);
                 }
                 UserInterface.DisplayEndMessage(profit);
-            }      
+            }                 
         }
     }
 }

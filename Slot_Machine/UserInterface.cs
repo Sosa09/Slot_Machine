@@ -44,7 +44,6 @@ namespace Slot_Machine
                 playerBet = Console.ReadLine();
                 gamerBetValid = GamerBetValidated(playerBet);
             }
-
             return Convert.ToInt32(playerBet);
         }
         /// <summary>
@@ -126,6 +125,7 @@ namespace Slot_Machine
         /// <param name="randomSlotNumbers"></param>
         public static void DisplayGrid(int[,] grid, int[] randomSlotNumbers)
         {
+            Console.Clear();
             int index = 0;     
             for (int i = 0; i < Constants.GRID_ROW; i++)
             {
@@ -135,7 +135,6 @@ namespace Slot_Machine
                     Console.Write($"{randomSlotNumbers[index]} ");
                     index++;
                 }
-
                 Console.WriteLine();
             }
         }

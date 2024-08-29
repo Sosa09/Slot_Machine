@@ -146,7 +146,7 @@ namespace Slot_Machine
             if (winnerLineCount > 0)
             {
                 profit += winnerLineCount;
-                wallet += winnerLineCount + playerBet;
+                wallet += winnerLineCount;
             }
             else
             {
