@@ -25,7 +25,7 @@ namespace Slot_Machine
             int wallet = Constants.START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profit = 0; //loses or winnings of the users
 
-            bool PlayerHasMoney = true; //return true if user has no money to player anymore and will end the game
+            bool gamerWalletNotEmpty = true; //return true if user has no money to player anymore and will end the game
 
             //set up the winning choices
             string[] possiblePlayDirections = { PlayDirection.Horizontal.ToString(), PlayDirection.Vertical.ToString(), PlayDirection.Diagonal.ToString() };
@@ -34,10 +34,10 @@ namespace Slot_Machine
             while (true)
             {                
                 //ALONG THE GAME THE SYSTEM WILL CHECK IF USER HAS ENOUGH MONEY TO PLAY
-                while (PlayerHasMoney)
-                {                    
-                    if(wallet < Constants.MINIMUM_BET)
-                        PlayerHasMoney = false;
+                while (gamerWalletNotEmpty)
+                {
+
+                    gamerWalletNotEmpty = Logic.GamerHasMoney(wallet, gamerWalletNotEmpty);
                 
                     int winnerLineCount = 0;
                   
