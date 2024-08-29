@@ -48,7 +48,7 @@ namespace Slot_Machine
 
                     UserInterface.DisplayGamePossibilities(possiblePlayDirections);
 
-                    PlayDirection gamerPlayDirectionChoice = UserInterface.GetGamerDirection(possiblePlayDirections);
+                    PlayDirection gamerPlayDirectionChoice = UserInterface.GetGamerDirection();
 
                     int[] randomNumbers = Logic.GenerateSlotNumbers(random, Constants.TOTAL_GRID_CELLS);
 

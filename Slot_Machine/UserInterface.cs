@@ -81,9 +81,8 @@ namespace Slot_Machine
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="possiblePlayDirection"></param>
         /// <returns></returns>
-        public static PlayDirection GetGamerDirection(string[] possiblePlayDirection)
+        public static PlayDirection GetGamerDirection()
         {
             bool gamerDirectionChoiceValid = false;
             char gamerDirectionChoice = new char();
