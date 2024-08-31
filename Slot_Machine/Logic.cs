@@ -49,7 +49,7 @@ namespace Slot_Machine
                 }
                 if (winner)
                 {
-                    UserInterface.DisplayWinningSlotLine();
+        
                     winnerAreaCount++;
                 }
             }
