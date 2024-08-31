@@ -9,18 +9,20 @@ namespace Slot_Machine
 {
     public static class Logic
     {
+        //instantiating Random class to get random numbers for the slot machine
+        static Random _random = new Random();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="random"></param>
         /// <param name="TotalGrid"></param>
         /// <returns></returns>
-        public static int[] GenerateSlotNumbers(Random random, int TotalGrid)
+        public static int[] GenerateSlotNumbers(int TotalGrid)
         {
             int[] randomNumbers = new int[TotalGrid];
             for (int i = 0; i < randomNumbers.Length; i++)
             {
-                randomNumbers[i] = random.Next(Constants.DIFFICULTY);
+                randomNumbers[i] = _random.Next(Constants.DIFFICULTY);
             }
             return randomNumbers;
         }

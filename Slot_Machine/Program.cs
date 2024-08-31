@@ -18,10 +18,7 @@ namespace Slot_Machine
             Diagonal
         }
         static void Main(string[] args)
-        {
-            //instantiating Random class to get random numbers for the slot machine
-            Random random = new Random();
-            
+        {   
             int wallet = Constants.START_MONEY; //assigning the start money right away, it will hold the total money after the game
             int profit = 0; //loses or winnings of the users
 
